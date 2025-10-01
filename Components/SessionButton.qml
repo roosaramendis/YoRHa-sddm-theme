@@ -42,6 +42,7 @@ Item {
 
         hoverEnabled: true
         anchors.left: parent.left
+        activeFocusOnTab: false
 
         model: sessionModel
         currentIndex: model.lastIndex

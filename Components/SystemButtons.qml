@@ -22,9 +22,6 @@ import QtQuick.Layouts 1.11
 import QtQuick.Controls 2.4
 
 RowLayout {
-
-    spacing: root.font.pointSize
-
     property var suspend: ["Suspend", config.TranslateSuspend || textConstants.suspend, sddm.canSuspend]
     property var hibernate: ["Hibernate", config.TranslateHibernate || textConstants.hibernate, sddm.canHibernate]
     property var reboot: ["Reboot", config.TranslateReboot || textConstants.reboot, sddm.canReboot]
@@ -33,34 +30,30 @@ RowLayout {
     property Control exposedLogin
 
     Repeater {
-
         model: [suspend, hibernate, reboot, shutdown]
 
         RoundButton {
             id: icon
-            text: modelData[1]
-            font.pointSize: root.font.pointSize * 0.8
             Layout.alignment: Qt.AlignHCenter
             icon.source: modelData ? Qt.resolvedUrl("../Assets/" + modelData[0] + ".svgz") : ""
-            icon.height: 2 * Math.round((root.font.pointSize * 3) / 2)
-            icon.width: 2 * Math.round((root.font.pointSize * 3) / 2)
-            display: AbstractButton.TextUnderIcon
-            visible: true//modelData[2]
+            icon.height: 20
+            icon.width: 20
+            visible: true
             hoverEnabled: true
-            palette.buttonText: "#34332B"
+            palette.buttonText: icon.activeFocus ? "#34332B" : "#D5CFAF"
+
             background: Rectangle {
-                height: 2
-                color: "transparent"
-                width: parent.width
-                border.width: parent.visualFocus ? 1 : 0
-                border.color: "transparent"
-                anchors.top: parent.bottom
+                color: icon.activeFocus || icon.hovered ? "#33000000" : "#34332B"
+                radius: 3
+                border.width: 0
             }
+
             Keys.onReturnPressed: clicked()
             onClicked: {
                 parent.forceActiveFocus()
                 index == 0 ? sddm.suspend() : index == 1 ? sddm.hibernate() : index == 2 ? sddm.reboot() : sddm.powerOff()
             }
+
             KeyNavigation.up: exposedLogin
             KeyNavigation.left: index == 0 ? exposedLogin : parent.children[index-1]
 

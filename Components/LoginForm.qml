@@ -34,7 +34,7 @@ ColumnLayout {
             id: headerText
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
-            text: "YoRHa LOGIN"
+            text: "START SESSION"
             font.family: formContainer.fontFamily
             font.pointSize: root.font.pointSize * 3
             color: "#34332B"
@@ -52,14 +52,57 @@ ColumnLayout {
         }
     }
 
-    // INPUT - Input fields aligned to the left
-    Input {
-        id: input
-        fontFamily: formContainer.fontFamily
+    Row {
+        width: parent.width
         Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
         Layout.fillWidth: true
         Layout.preferredHeight: root.height / 10
         Layout.leftMargin: 10
+        // INPUT - Input fields aligned to the left
+        Input {
+            id: input
+            anchors.verticalCenter: parent.verticalCenter
+            fontFamily: formContainer.fontFamily
+        }
+
+        Item {
+            id: avatarContainer
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+            width: 440
+            height: 540
+
+            Rectangle {
+                id: avatarBackground
+                anchors.fill: parent
+                color: "#D5CFAF"
+
+                layer.enabled: true
+                layer.effect: DropShadow {
+                    transparentBorder: true
+                    horizontalOffset: 4
+                    verticalOffset: 4
+                    radius: 0
+                    samples: 17
+                    color: "#45000000"
+                }
+            }
+
+            Image {
+                
+            }
+
+            Image {
+                id: yorhaLogo
+                anchors.fill: parent
+                anchors.centerIn: parent
+                anchors.margins: 20
+
+                source: Qt.resolvedUrl("../Assets/yorha_logo.png")
+                
+                fillMode: Image.PreserveAspectFit
+            }
+        }
     }
 
     // INFOBOARD - Box with current time and date, fills horizontally
@@ -159,8 +202,9 @@ ColumnLayout {
                 anchors.right: parent.right
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
-                anchors.margins: 10
-                spacing: 10
+                anchors.rightMargin: 60
+                exposedLogin: input.exposeLogin
+                spacing: 20
             }
         }
 

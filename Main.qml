@@ -33,11 +33,10 @@ Pane {
     LayoutMirroring.childrenInherit: true
 
     padding: config.ScreenPadding
-    palette.button: "transparent"
-    palette.highlight: config.AccentColor
-    palette.text: config.MainColor
-    palette.buttonText: config.MainColor
-    palette.window: "#444"
+
+    palette.button: "#33000000"
+    palette.highlight: "#C9C3A3"
+    palette.text: "#34332B"
 
     font.family: config.Font
     font.pointSize: config.FontSize !== "" ? config.FontSize : parseInt(height / 80)

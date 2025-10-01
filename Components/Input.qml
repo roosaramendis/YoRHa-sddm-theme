@@ -116,7 +116,7 @@ Column {
             anchors.topMargin: 12
             anchors.bottomMargin: 12
             width: height
-            color: "#34332B"
+            color: root.palette.text
             opacity: 0.8
             z: 5
         }
@@ -133,14 +133,13 @@ Column {
             selectByMouse: true
             horizontalAlignment: TextInput.AlignLeft
             renderType: Text.QtRendering
-            color: "#34332B"
+            color: root.palette.text
             leftPadding: usernameSquare.width + 2 * usernameSquare.anchors.leftMargin
 
             background: Item {
                 Rectangle {
                     anchors.fill: parent
-                    color: "#000000"
-                    opacity: 0.2
+                    color: root.palette.button
                 }
 
                 Rectangle {
@@ -187,7 +186,7 @@ Column {
                     when: username.activeFocus
                     PropertyChanges { // Change text color
                         target: username
-                        color: "#C9C3A3"
+                        color: root.palette.highlight
                     }
                     PropertyChanges { // Darken the background
                         target: usernameDarkener
@@ -210,7 +209,7 @@ Column {
                     }
                     PropertyChanges { // Highlight square
                         target: usernameSquare
-                        color: "#C9C3A3"
+                        color: root.palette.highlight
                     }
                 }
             ]
@@ -301,7 +300,7 @@ Column {
             anchors.topMargin: 12
             anchors.bottomMargin: 12
             width: height
-            color: "#34332B"
+            color: root.palette.text
             opacity: 0.8
             z: 5
         }
@@ -320,14 +319,13 @@ Column {
             passwordCharacter: "*"//"•"
             passwordMaskDelay: 0
             renderType: Text.QtRendering
-            color: "#34332B"
+            color: root.palette.text
             leftPadding: passwordSquare.width + 2 * passwordSquare.anchors.leftMargin
 
             background: Item {
                 Rectangle {
                     anchors.fill: parent
-                    color: "#000000"
-                    opacity: 0.2
+                    color: root.palette.button
                 }
 
                 Rectangle {
@@ -392,11 +390,11 @@ Column {
                     }
                     PropertyChanges { // Change text color
                         target: password
-                        color: "#C9C3A3"
+                        color: root.palette.highlight
                     }
                     PropertyChanges { // Highlight square
                         target: passwordSquare
-                        color: "#C9C3A3"
+                        color: root.palette.highlight
                     }
                 }
             ]
@@ -494,6 +492,7 @@ Column {
             }
         }
 
+        // SESSION SQUARE
         Rectangle {
             id: sessionSquare
             anchors.left: sessionSelect.left
@@ -503,7 +502,7 @@ Column {
             anchors.topMargin: 12
             anchors.bottomMargin: 12
             width: height
-            color: "#34332B"
+            color: root.palette.text
             opacity: 0.8
             z: 5
         }
@@ -539,8 +538,7 @@ Column {
 
                 Rectangle {
                     anchors.fill: parent
-                    color: "#000000"
-                    opacity: 0.2
+                    color: root.palette.button
                 }
 
                 Rectangle {
@@ -593,7 +591,7 @@ Column {
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
                 leftPadding: sessionSquare.width + 2 * sessionSquare.anchors.leftMargin
-                color: "#34332B"
+                color: root.palette.text
             }
         }
 
@@ -626,11 +624,11 @@ Column {
                 }
                 PropertyChanges { // Highlight text
                     target: sessionText
-                    color: "#C9C3A3"
+                    color: root.palette.highlight
                 }
                 PropertyChanges { // Highlight square
                     target: sessionSquare
-                    color: "#C9C3A3"
+                    color: root.palette.highlight
                 }
             },
             State { // When the popup is open:
@@ -663,11 +661,11 @@ Column {
                 }
                 PropertyChanges { // Highlight text
                     target: sessionText
-                    color: "#C9C3A3"
+                    color: root.palette.highlight
                 }
                 PropertyChanges { // Highlight square
                     target: sessionSquare
-                    color: "#C9C3A3"
+                    color: root.palette.highlight
                 }
             }
         ]
@@ -679,6 +677,8 @@ Column {
         height: root.font.pointSize * 5
         width: 500
         anchors.left: parent.left
+
+        property real opacityMultiplier: (username.text.length > 0 && password.text.length > 0) ? 1 : 0.6
 
         // VERTICAL BAR
         Image {
@@ -758,8 +758,8 @@ Column {
             anchors.topMargin: 12
             anchors.bottomMargin: 12
             width: height
-            color: "#34332B"
-            opacity: 0.8
+            color: root.palette.text
+            opacity: login.opacityMultiplier
             z: 5
         }
 
@@ -767,30 +767,29 @@ Column {
             id: loginButton
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.centerIn: parent
-            text: config.TranslateLogin || textConstants.login
+            text: "Login"
             height: 48
             width: 389
             implicitWidth: parent.width
-            enabled: true 
+            enabled: true
             hoverEnabled: true
 
             contentItem: Text {
                 text: parent.text
                 leftPadding: loginSquare.width + 2 * loginSquare.anchors.leftMargin - 7
-                color: "#34332B"
+                color: root.palette.text
+                opacity: login.opacityMultiplier
                 font.pointSize: root.font.pointSize
                 font.family: inputContainer.fontFamily
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
-                opacity: 1
             }
 
             background: Item {
                 id: buttonBackground
                 Rectangle {
                     anchors.fill: parent
-                    color: "#000000"
-                    opacity: 0.2
+                    color: root.palette.button
                 }
 
                 Rectangle {
@@ -801,7 +800,8 @@ Column {
                     color: "#000000"
                     opacity: 0
                     SequentialAnimation on opacity {
-                        running: loginButton.visualFocus
+                        id: loginDarkenerAnimation
+                        running: false
                         loops: Animation.Infinite
                         PauseAnimation { duration: 700 }
                         NumberAnimation { to: 0.3; duration: 300; easing.type: Easing.InOutQuad }
@@ -833,68 +833,47 @@ Column {
 
             states: [
                 State {
-                    name: "pressed"
-                    when: loginButton.down
-                    
-                    PropertyChanges {
-                        target: buttonBackground
-                        color: Qt.darker(root.palette.highlight, 1.1)
-                        opacity: 1
-                    }
-                    PropertyChanges {
-                        target: loginButton.contentItem
-                        color: "#444"
-                    }
-                },
-
-                State {
                     name: "hovered"
                     when: loginButton.visualFocus
                     PropertyChanges {
                         target: loginSquare
-                        color: "#C9C3A3"
+                        color: root.palette.highlight
                     }
                     PropertyChanges {
                         target: loginButton.contentItem
-                        color: "#C9C3A3"
+                        color: root.palette.highlight
                     }
                     PropertyChanges {
                         target: loginDarkener
-                        opacity: 0.50
+                        opacity: 0.50 * login.opacityMultiplier
                         width: parent.width
                     }
                     PropertyChanges {
+                        target: loginDarkenerAnimation
+                        running: username.text.length > 0 && password.text.length > 0 ? true : false
+                    }
+                    PropertyChanges {
                         target: buttonBackground
-                        layer.enabled: true
+                        layer.enabled: username.text.length > 0 && password.text.length > 0 ? true : false
                     }
                     PropertyChanges {
                         target: loginUpwardsSidebar
                         anchors.bottomMargin: 4
-                        opacity: 0.63
+                        opacity: 0.63 * login.opacityMultiplier
                     }
                     PropertyChanges {
                         target: loginDownwardsSidebar
                         anchors.topMargin: 4
-                        opacity: 0.63
-                    }
-                },
-                State {
-                    name: "enabled"
-                    when: loginButton.enabled
-                    PropertyChanges {
-                        target: buttonBackground;
-                        color: root.palette.text;
-                        opacity: 1
-                    }
-                    PropertyChanges {
-                        target: loginButton.contentItem;
-                        opacity: 1
+                        opacity: 0.63 * login.opacityMultiplier
                     }
                 }
             ]
 
             Keys.onReturnPressed: clicked()
-            onClicked: sddm.login(username.text, password.text, sessionSelect.selectedSession)
+
+            onClicked: if (username.text.length > 0 && password.text.length > 0) {
+                sddm.login(username.text, password.text, sessionSelect.selectedSession)
+            }
         }
     }
 

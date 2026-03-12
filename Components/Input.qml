@@ -21,6 +21,7 @@ import QtQuick 2.11
 import QtQuick.Layouts 1.11
 import QtQuick.Controls 2.4
 import QtGraphicalEffects 1.0
+import SddmComponents 2.0 as SDDM
 
 Column {
     id: inputContainer
@@ -123,7 +124,7 @@ Column {
 
         TextField {
             id: username
-            text: "neeko"
+            text: config.ForceLastUser === "true" ? userModel.lastUser : ""
             font.capitalization: Font.Capitalize
             font.family: inputContainer.fontFamily
             anchors.centerIn: parent

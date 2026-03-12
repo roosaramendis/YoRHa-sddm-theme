@@ -1,12 +1,16 @@
 [SddmGreeterTheme]
 Name=YoRHa Theme
 Description=A YoRHa login screen
+Author=NeekoKun
+Copyright=Copyright (C) 2026 NeekoKun
 License=GPL-3.0-or-later
 Type=sddm-theme
-Version=1.2
-Screenshot=Preview.png
+Version=1.0
+Website=https://github.com/NeekoKun/YoRHa-sddm-theme
+Screenshot=Previews/default.png
 MainScript=Main.qml
 ConfigFile=theme.conf
 TranslationsDirectory=translations
+Email=neekokun@proton.me
 Theme-Id=YoRHa-theme
 Theme-API=2.11

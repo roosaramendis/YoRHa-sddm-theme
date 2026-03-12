@@ -12,9 +12,6 @@ ColumnLayout {
 
     SDDM.TextConstants { id: textConstants }
 
-    property int p: config.ScreenPadding
-    property string a: config.FormPosition
-
     FontLoader {
         id: rodinFont
         source: Qt.resolvedUrl("../fonts/Rodin_Pro_DB.otf") // TODO: Get the correct font (RodinPro M)
@@ -179,7 +176,7 @@ ColumnLayout {
                     anchors.margins: 30
 
                     property string quoteText: {
-                        var fileUrl = Qt.resolvedUrl("../Quotes/nier.txt");
+                        var fileUrl = Qt.resolvedUrl("../Quotes/nier.txt"); // Edit this to change the quote file
                         var quoteText = "";
                         var xhr = new XMLHttpRequest();
                         xhr.open("GET", fileUrl, false);

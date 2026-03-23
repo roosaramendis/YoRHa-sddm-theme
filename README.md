@@ -1,5 +1,3 @@
-!! Blatanly stolen code from [SDDM Sugar Dark](https://github.com/MarianArit/sddm-sugar-dark) !!
-
 ## Previews
 ![Default Preview](./Previews/default.png)
 ![DE Select Preview](./Previews/de-select.png)

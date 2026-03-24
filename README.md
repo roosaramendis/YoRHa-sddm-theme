@@ -11,11 +11,16 @@
 - Sound effects play on focus, button press and login (WIP)
 
 ## Installation
-1. Copy the theme folder to `/usr/share/sddm/themes/`
+1. Clone the repository in `/usr/share/sddm/themes`
+    ```bash
+    cd /usr/share/sddm/themes
+    git clone https://github.com/NeekoKun/YoRHa-sddm-theme
+    ```
+
 2. Edit `/etc/sddm.conf` and set:
     ```
     [Theme]
-        Current=YoRHa
+        Current=YoRHa-sddm-theme
     ```
 3. Restart your display manager or reboot your system
 

@@ -51,6 +51,13 @@ Column {
     property bool failed
     property string fontFamily: "Arial"
 
+    // Disable Tab navigation
+    Keys.onPressed: {
+        if (event.key === Qt.Key_Tab) {
+            event.accepted = true
+        }
+    }
+
     // USERNAME INPUT
     Item {
         id: usernameField
@@ -332,6 +339,7 @@ Column {
         TextField {
             id: password
             anchors.centerIn: parent
+            activeFocusOnTab: false
             height: 48
             width: 389
             focus: config.ForcePasswordFocus == "true" ? true : false
@@ -441,9 +449,6 @@ Column {
         width: 500
         anchors.left: parent.left
 
-        KeyNavigation.down: loginButton
-        KeyNavigation.up: password
-
         // VERTICAL BAR
         Image {
             id: sessionVerticalBar
@@ -543,11 +548,15 @@ Column {
 
         SessionButton {
             id: sessionSelect
+            activeFocusOnTab: false
             implicitWidth: 389
             anchors.left: parent.left
             anchors.leftMargin: 55
             anchors.verticalCenter: parent.verticalCenter
             height: 48
+
+            KeyNavigation.up: password
+            KeyNavigation.down: loginButton
 
             Keys.onUpPressed: {
                 fieldFocusSound.play()
@@ -810,6 +819,7 @@ Column {
 
         Button {
             id: loginButton
+            activeFocusOnTab: false
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.centerIn: parent
             text: "Login"
@@ -875,11 +885,15 @@ Column {
             }
 
             KeyNavigation.up: sessionSelect
+            Keys.onUpPressed: {
+                fieldFocusSound.play()
+                KeyNavigation.up.forceActiveFocus()
+            }
 
             states: [
                 State {
                     name: "hovered"
-                    when: loginButton.visualFocus
+                    when: loginButton.activeFocus
                     PropertyChanges {
                         target: loginSquare
                         color: root.palette.highlight
@@ -913,15 +927,6 @@ Column {
                     }
                 }
             ]
-
-            Connections {
-                target: loginButton
-                onActiveFocusChanged: {
-                    if (loginButton.activeFocus) {
-                        fieldFocusSound.play()
-                    }
-                }
-            } //TODO: Add sound for clicking the button, but only if username and password are filled in
 
             Keys.onReturnPressed: clicked()
 

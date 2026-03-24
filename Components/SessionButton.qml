@@ -85,9 +85,8 @@ Item {
         delegate: ItemDelegate {
             width: parent.width
             anchors.horizontalCenter: parent.horizontalCenter
-            height: root.font.pointSize * 5
+            height: 65
 
-            
             highlighted: parent.highlightedIndex === index
 
             background: Item {
@@ -254,12 +253,12 @@ Item {
                         }
                         PropertyChanges {
                             target: itemUpwardsSidebar
-                            anchors.bottomMargin: -10
+                            anchors.bottomMargin: -5
                             opacity: 0.63
                         }
                         PropertyChanges {
                             target: itemDownwardsSidebar
-                            anchors.topMargin: -9
+                            anchors.topMargin: -4
                             opacity: 0.63
                         }
                         PropertyChanges {

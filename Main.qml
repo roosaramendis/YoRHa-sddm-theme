@@ -63,12 +63,19 @@ Pane {
                                config.FormPosition == "right" &&
                                config.BackgroundImageAlignment == "center"
 
+    Rectangle {
+        anchors.fill: parent
+        color: "#000000"
+    }
+
     Item {
         id: sizeHelper
 
-        anchors.fill: parent
-        height: parent.height
-        width: parent.width
+        height: 1080
+        width: 1920
+
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.verticalCenter: parent.verticalCenter
 
         LoginForm {
             id: form
@@ -81,33 +88,24 @@ Pane {
             z: 1
         }
 
-        // "Wallpaper"
-        Image {
+        // BACKGROUND COLOR + GRADIENT
+        Rectangle {
             id: backgroundImage
-
             height: parent.height
-            width: config.HaveFormBackground == "true" && config.FormPosition != "center" && config.PartialBlur != "true" ? parent.width - formBackground.width : parent.width
-            anchors.left: leftleft || 
-                          leftcenter ?
-                                formBackground.right : undefined
+            width: parent.width
+            anchors.fill: parent
+            color: "#CAC6A7"
 
-            anchors.right: rightright ||
-                           rightcenter ?
-                                formBackground.left : undefined
 
-            horizontalAlignment: config.BackgroundImageAlignment == "left" ?
-                                 Image.AlignLeft :
-                                 config.BackgroundImageAlignment == "right" ?
-                                 Image.AlignRight :
-                                 config.BackgroundImageAlignment == "center" ?
-                                 Image.AlignHCenter : undefined
+            layer.enabled: true
+            layer.effect: RadialGradient {
 
-            source: config.background || config.Background
-            fillMode: config.ScaleImageCropped == "true" ? Image.PreserveAspectCrop : Image.PreserveAspectFit
-            asynchronous: true
-            cache: true
-            clip: true
-            mipmap: true
+                gradient: Gradient {
+                    GradientStop { position: 0; color: "#CAC6A7" }
+                    GradientStop { position: 0.1; color: "#CAC6A7" }
+                    GradientStop { position: 1; color: "#6d6b59" }
+                }
+            }
         }
 
         // Horizontal Bars
@@ -696,6 +694,15 @@ Pane {
         MouseArea {
             anchors.fill: backgroundImage
             onClicked: parent.forceActiveFocus()
+        }
+
+        transform: Scale {
+            xScale: {
+                let scaleByWidth  = root.width  / sizeHelper.width
+                let scaleByHeight = root.height / sizeHelper.height
+                return Math.min(scaleByWidth, scaleByHeight)  // fit within screen
+            }
+            yScale: xScale
         }
     }
 

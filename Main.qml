@@ -488,8 +488,19 @@ Pane {
             anchors.verticalCenter: parent.bottom
             width: 1194
             height: 1194
-            source: "Assets/circle.png"
+            source: "Assets/semicircle.png" // Fake fuckass circle
             opacity: 0.13
+            rotation: 180
+
+            NumberAnimation {
+                id: firstBottomCircleRotationAnim
+                target: firstBottomCircle
+                property: "rotation"
+                from: 180
+                to: 270
+                duration: 1000
+                easing.type: Easing.Linear
+            }
         }
 
         Image {
@@ -498,8 +509,19 @@ Pane {
             anchors.verticalCenter: parent.bottom
             width: 1224
             height: 1224
-            source: "Assets/circle.png"
+            source: "Assets/semicircle.png"
             opacity: 0.13
+            rotation: 180
+
+            NumberAnimation {
+                id: secondBottomCircleRotationAnim
+                target: secondBottomCircle
+                property: "rotation"
+                from: 180
+                to: 280
+                duration: 1000
+                easing.type: Easing.Linear
+            }
         }
 
         // TOP CORNER
@@ -649,8 +671,19 @@ Pane {
             anchors.verticalCenter: parent.top
             width: 1194
             height: 1194
-            source: "Assets/circle.png"
+            source: "Assets/semicircle.png" // Fake fuckass circle
             opacity: 0.13
+            rotation: 0
+
+            NumberAnimation {
+                id: firstTopCircleRotationAnim
+                target: firstTopCircle
+                property: "rotation"
+                from: 0
+                to: 180
+                duration: 1000
+                easing.type: Easing.Linear
+            }
         }
 
         Image {
@@ -659,9 +692,19 @@ Pane {
             anchors.verticalCenter: parent.top
             width: 1224
             height: 1224
-            source: "Assets/circle.png"
+            source: "Assets/semicircle.png"
             opacity: 0.13
+            rotation: 0
 
+            NumberAnimation {
+                id: secondTopCircleRotationAnim
+                target: secondTopCircle
+                property: "rotation"
+                from: 0
+                to: 100
+                duration: 1000
+                easing.type: Easing.Linear
+            }
         }
 
         // GRID TILE OVERLAY
@@ -692,6 +735,10 @@ Pane {
         onTriggered: {
             horizontalTopBarSlideInAnimation.start()
             horizontalBotBarSlideInAnimation.start()
+            firstTopCircleRotationAnim.start()
+            secondTopCircleRotationAnim.start()
+            firstBottomCircleRotationAnim.start()
+            secondBottomCircleRotationAnim.start()
         }
     }
 }

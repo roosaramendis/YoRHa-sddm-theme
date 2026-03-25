@@ -22,17 +22,43 @@ import QtQuick 2.11
 import QtQuick.Layouts 1.11
 import QtQuick.Controls 2.4
 import QtGraphicalEffects 1.0
+import QtMultimedia 5.11
 import SddmComponents 2.0 as SDDM
 
 Column {
     id: inputContainer
     Layout.fillWidth: true
 
+    SoundEffect {
+        id: fieldFocusSound
+        source: Qt.resolvedUrl("../Assets/focus.wav")
+        volume: 1
+    }
+
+    SoundEffect {
+        id: popupOpenSound
+        source: Qt.resolvedUrl("../Assets/open.wav")
+        volume: 1
+    }
+
+    SoundEffect {
+        id: popupCloseSound
+        source: Qt.resolvedUrl("../Assets/close.wav")
+        volume: 1
+    }
+
     property Control exposeLogin: loginButton
     property alias inputAnimationsTrigger: inputAnimationsTrigger
     property bool failed
     property string fontFamily: "Arial"
     property var formFunctions: parent.parent
+
+    // Disable Tab navigation
+    Keys.onPressed: {
+        if (event.key === Qt.Key_Tab) {
+            event.accepted = true
+        }
+    }
 
     // USERNAME INPUT
     Item {
@@ -187,6 +213,10 @@ Column {
             }
             Keys.onReturnPressed: loginButton.clicked()
             KeyNavigation.down: password
+            Keys.onDownPressed: {
+                fieldFocusSound.play()
+                KeyNavigation.down.forceActiveFocus()
+            }
             z: 1
 
             states: [
@@ -327,6 +357,11 @@ Column {
             height: 48 //TODO: Relative scaling
             width: 389 //TODO: Relative scaling
             focus: false//config.ForcePasswordFocus == "true" ? true : false
+            anchors.centerIn: parent
+            activeFocusOnTab: false
+            height: 48
+            width: 389
+            focus: config.ForcePasswordFocus == "true" ? true : false
             selectByMouse: true
             echoMode: TextInput.Password
             placeholderText: ""
@@ -381,6 +416,15 @@ Column {
             Keys.onReturnPressed: loginButton.clicked()
             KeyNavigation.down: sessionSelect
 
+            Keys.onDownPressed: {
+                fieldFocusSound.play()
+                KeyNavigation.down.forceActiveFocus()
+            }
+            Keys.onUpPressed: {
+                fieldFocusSound.play()
+                KeyNavigation.up.forceActiveFocus()
+             }
+
             states: [
                 State { // On focus:
                     name: "focused"
@@ -426,8 +470,6 @@ Column {
         height: root.font.pointSize * 5
         width: 500 //TODO: Relative scaling
         anchors.left: parent.left
-
-        KeyNavigation.down: loginButton
 
         // VERTICAL BAR
         Image {
@@ -528,6 +570,7 @@ Column {
 
         SessionButton {
             id: sessionSelect
+            activeFocusOnTab: false
             implicitWidth: 389 //TODO: Relative scaling
             anchors.left: parent.left
             focus: false
@@ -536,12 +579,26 @@ Column {
             anchors.verticalCenter: parent.verticalCenter
             height: 48 //TODO: Relative scaling
 
+            KeyNavigation.up: password
+            KeyNavigation.down: loginButton
+
+            Keys.onUpPressed: {
+                fieldFocusSound.play()
+                KeyNavigation.up.forceActiveFocus()
+            }
+            Keys.onDownPressed: {
+                fieldFocusSound.play()
+                KeyNavigation.down.forceActiveFocus()
+            }
+
             onPopupOpenedChanged: {
                 if (!popupOpened) {
                     sessionDarkener.width = sessionBackground.width
                     sessionDarkener.opacity = 0.5
+                    popupCloseSound.play()
                 } else {
                     sessionDarkener.opacity = 0.3
+                    popupOpenSound.play()
                 }
             }
 
@@ -787,6 +844,7 @@ Column {
 
         Button {
             id: loginButton
+            activeFocusOnTab: false
             anchors.left: parent.left
             anchors.leftMargin: -5 //TODO: Relative scaling
             anchors.verticalCenter: parent.verticalCenter
@@ -854,11 +912,15 @@ Column {
             }
 
             KeyNavigation.up: sessionSelect
+            Keys.onUpPressed: {
+                fieldFocusSound.play()
+                KeyNavigation.up.forceActiveFocus()
+            }
 
             states: [
                 State {
                     name: "hovered"
-                    when: loginButton.visualFocus
+                    when: loginButton.activeFocus
                     PropertyChanges {
                         target: loginSquare
                         color: root.palette.highlight
@@ -946,8 +1008,8 @@ Column {
 
     Connections {
         target: sddm
-        onLoginSucceeded: {}
-        onLoginFailed: {
+        onLoginSucceeded: {} //TODO: Play sound on login success
+        onLoginFailed: { //TODO: Play sound on login failure
             failed = true
             resetError.running ? resetError.stop() && resetError.start() : resetError.start()
         }

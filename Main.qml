@@ -70,14 +70,14 @@ Pane {
         height: parent.height
         width: parent.width
 
-        Rectangle {
-            id: formBackground
-            anchors.fill: form
-            anchors.centerIn: form
-            color: "#000000"
-            opacity: 0
-            z: 1
-        }
+        //Rectangle {
+        //    id: formBackground
+        //    anchors.fill: form
+        //    anchors.centerIn: form
+        //    color: "#000000"
+        //    opacity: 0
+        //    z: 1
+        //}
 
         LoginForm {
             id: form

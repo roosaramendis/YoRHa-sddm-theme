@@ -8,7 +8,17 @@
 
 ## Visual Effects (VFX)
 - [ ] Smooth slide-in animations
+    - [x] Horizontal Bars
+    - [x] Diagonal Lines
+    - [x] Circles
+    - [ ] Panels
+    - [ ] Triangle Grid
 - [ ] Smooth exit transition
+    - [x] Horizontal Bars
+    - [x] Diagonal Lines
+    - [x] Circles
+    - [ ] Panels
+    - [ ] Triangle Grid
 
 ## Integration
 - [ ] Test audio-visual synchronization

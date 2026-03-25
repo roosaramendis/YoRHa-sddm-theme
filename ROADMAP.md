@@ -30,3 +30,4 @@
 ## Integration
 - [ ] Test audio-visual synchronization
 - [ ] Cross-compatibility for different screen sizes
+    - [ ] Convert images into built-ins when possible for better scaling

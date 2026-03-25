@@ -95,7 +95,7 @@ Item {
                     anchors.right: sessionSelect.left
                     anchors.rightMargin: 0
                     anchors.verticalCenter: sessionSelect.verticalCenter
-                    width: 30
+                    width: 30 //TODO: Relative scaling
                     height: parent.height
                     source: Qt.resolvedUrl("../Assets/vertical_bar.png")
                     opacity: 0.13
@@ -104,10 +104,10 @@ Item {
                 // FOCUS POINTER
                 Image {
                     anchors.verticalCenter: parent.verticalCenter
-                    anchors.leftMargin: 10
-                    x: x + 15
-                    width: 40
-                    height: 27
+                    anchors.leftMargin: 10 //TODO: Relative scaling
+                    x: x + 15 //TODO: Relative scaling
+                    width: 40 //TODO: Relative scaling
+                    height: 27 //TODO: Relative scaling
                     source: Qt.resolvedUrl("../Assets/focus_pointer.png")
                     opacity: selectSession.highlightedIndex === index ? 0.63 : 0
                     visible: opacity > 0
@@ -122,10 +122,10 @@ Item {
                 // SIDEBARS
                 Rectangle {
                     id: itemUpwardsSidebar
-                    width: 389
-                    height: 2
+                    width: 389 //TODO: Relative scaling
+                    height: 2 //TODO: Relative scaling
                     anchors.bottom: parent.top
-                    anchors.bottomMargin: -12
+                    anchors.bottomMargin: -12 //TODO: Relative scaling
                     anchors.horizontalCenter: parent.horizontalCenter
                     color: "#000000"
                     opacity: 0
@@ -140,10 +140,10 @@ Item {
 
                 Rectangle {
                     id: itemDownwardsSidebar
-                    width: 389
-                    height: 2
+                    width: 389 //TODO: Relative scaling
+                    height: 2 //TODO: Relative scaling
                     anchors.top: parent.bottom
-                    anchors.topMargin: -12
+                    anchors.topMargin: -12 //TODO: Relative scaling
                     anchors.horizontalCenter: parent.horizontalCenter
                     color: "#000000"
                     opacity: 0
@@ -164,22 +164,21 @@ Item {
                 Item {
                     id: itemTextWrapper
                     anchors.centerIn: parent
-                    width: 389
-                    height: 48
-                    
+                    width: 389 //TODO: Relative scaling
+                    height: 48 //TODO: Relative scaling
+
                     Item {
                         id: itemBackground
                         anchors.fill: parent
-
                         // SQUARE
                         Rectangle {
                             id: itemSquare
                             anchors.left: parent.left
                             anchors.top: parent.top
                             anchors.bottom: parent.bottom
-                            anchors.leftMargin: 12
-                            anchors.topMargin: 12
-                            anchors.bottomMargin: 12
+                            anchors.leftMargin: 12 //TODO: Relative scaling
+                            anchors.topMargin: 12 //TODO: Relative scaling
+                            anchors.bottomMargin: 12 //TODO: Relative scaling
                             width: height
                             color: "#34332B"
                             opacity: 0.8
@@ -194,8 +193,8 @@ Item {
 
                             layer.enabled: false
                             layer.effect: DropShadow {
-                                horizontalOffset: 4
-                                verticalOffset: 4
+                                horizontalOffset: 4 //TODO: Relative scaling
+                                verticalOffset: 4 //TODO: Relative scaling
                                 radius: 0
                                 samples: 17
                                 cached: true
@@ -274,10 +273,10 @@ Item {
         popup: Popup {
             id: popupHandler
             y: parent.y + (parent.height - height) / 2
-            x: parent.x + parent.width - 10
-            width: 545
+            x: parent.x + parent.width - 10 //TODO: Relative scaling
+            width: 545 //TODO: Relative scaling
             implicitHeight: contentItem.implicitHeight
-            padding: 10
+            padding: 10 //TODO: Relative scaling
 
             background: Rectangle {
                 color: "transparent"

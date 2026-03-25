@@ -7,8 +7,8 @@ import QtGraphicalEffects 1.0
 ColumnLayout {
     id: formContainer
     anchors.fill: parent
-    anchors.leftMargin: 63
-    anchors.rightMargin: 63
+    anchors.leftMargin: 63 //TODO: Relative scaling
+    anchors.rightMargin: 63 //TODO: Relative scaling
 
     SDDM.TextConstants { id: textConstants }
 
@@ -42,7 +42,7 @@ ColumnLayout {
     Item {
         id: header
         Layout.fillWidth: true
-        Layout.preferredHeight: 60
+        Layout.preferredHeight: 60 //TODO: Relative scaling
 
         property var typewriterCharIndex: 0
 
@@ -59,8 +59,8 @@ ColumnLayout {
             layer.enabled: true
             layer.effect: DropShadow {
                 anchors.fill: headerText
-                horizontalOffset: 5
-                verticalOffset: 5
+                horizontalOffset: 5 //TODO: Relative scaling
+                verticalOffset: 5 //TODO: Relative scaling
                 radius: 0
                 samples: 16
                 color: "#45000000"
@@ -73,7 +73,7 @@ ColumnLayout {
         Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
         Layout.fillWidth: true
         Layout.preferredHeight: root.height / 10
-        Layout.leftMargin: 10
+        Layout.leftMargin: 10 //TODO: Relative scaling
         // INPUT - Input fields aligned to the left
         Input {
             id: input
@@ -86,8 +86,8 @@ ColumnLayout {
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
             opacity: 0
-            width: 440
-            height: 540
+            width: 440 //TODO: Relative scaling
+            height: 540 //TODO: Relative scaling
 
             Rectangle {
                 id: avatarBackground
@@ -97,8 +97,8 @@ ColumnLayout {
                 layer.enabled: true
                 layer.effect: DropShadow {
                     transparentBorder: true
-                    horizontalOffset: 4
-                    verticalOffset: 4
+                    horizontalOffset: 4 //TODO: Relative scaling
+                    verticalOffset: 4 //TODO: Relative scaling
                     radius: 0
                     samples: 17
                     color: "#45000000"
@@ -114,7 +114,7 @@ ColumnLayout {
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    height: 47
+                    height: 47 //TODO: Relative scaling
 
                     Rectangle {
                         anchors.fill: parent
@@ -125,7 +125,7 @@ ColumnLayout {
                     Text {
                         anchors.left: parent.left
                         anchors.verticalCenter: parent.verticalCenter
-                        anchors.leftMargin: 30
+                        anchors.leftMargin: 30 //TODO: Relative scaling
                         text: formContainer.getTypewriterText("YoRHa", formContainer.typewriterCharIndex)
                         font.family: formContainer.fontFamily
                         font.pointSize: root.font.pointSize * 1.2
@@ -136,12 +136,12 @@ ColumnLayout {
 
                 Item {
                     id: logoContent
-                    anchors.margins: 30
-                    anchors.topMargin: 20
+                    anchors.margins: 30 //TODO: Relative scaling
+                    anchors.topMargin: 20 //TODO: Relative scaling
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: logoHeader.bottom
-                    height: 200
+                    height: 200 //TODO: Relative scaling
 
                     Rectangle {
                         anchors.fill: parent
@@ -152,7 +152,7 @@ ColumnLayout {
                         id: yorhaLogo
                         anchors.fill: parent
                         anchors.centerIn: parent
-                        anchors.margins: 10
+                        anchors.margins: 10 //TODO: Relative scaling
                         source: Qt.resolvedUrl("../Assets/yorha_logo.png")
                         fillMode: Image.PreserveAspectFit
                         antialiasing: true
@@ -164,8 +164,8 @@ ColumnLayout {
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: logoContent.bottom
-                    anchors.margins: 30
-                    height: 47
+                    anchors.margins: 30 //TODO: Relative scaling
+                    height: 47 //TODO: Relative scaling
 
                     Text {
                         font.pointSize: root.font.pointSize * 1.2
@@ -180,9 +180,9 @@ ColumnLayout {
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: logoCaption.bottom
-                    anchors.leftMargin: 30
-                    anchors.rightMargin: 30
-                    height: 2
+                    anchors.leftMargin: 30 //TODO: Relative scaling
+                    anchors.rightMargin: 30 //TODO: Relative scaling
+                    height: 2 //TODO: Relative scaling
                     color: "#AFA98F"
                     opacity: 1
                 }
@@ -193,7 +193,7 @@ ColumnLayout {
                     anchors.right: parent.right
                     anchors.top: logoCaption.bottom
                     anchors.bottom: parent.bottom
-                    anchors.margins: 30
+                    anchors.margins: 30 //TODO: Relative scaling
 
                     property string quoteText: {
                         var fileUrl = Qt.resolvedUrl("../Quotes/nier.txt"); // Edit this to change the quote file
@@ -278,7 +278,7 @@ ColumnLayout {
                 id: avatarContainerSlideIn
                 target: avatarContainer.anchors
                 property: "rightMargin"
-                from: -60
+                from: -60 //TODO: Relative scaling
                 to: 0
                 duration: 600
                 easing.type: Easing.OutCubic
@@ -294,7 +294,7 @@ ColumnLayout {
         opacity: 0 // Gets modified by animation
 
         Layout.fillWidth: true
-        Layout.preferredHeight: 80
+        Layout.preferredHeight: 80 //TODO: Relative scaling
 
         color: "#D5CFAF"
 
@@ -320,14 +320,14 @@ ColumnLayout {
 
         Row {
             anchors.fill: parent
-            anchors.leftMargin: 60
+            anchors.leftMargin: 60 //TODO: Relative scaling
 
             Row {  // Time & Date
                 anchors.left: parent.left
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
-                anchors.margins: 15
-                spacing: 20
+                anchors.margins: 15 //TODO: Relative scaling
+                spacing: 20 //TODO: Relative scaling
 
                 // DATE
                 Text {
@@ -353,7 +353,7 @@ ColumnLayout {
 
                 // Separator
                 Rectangle {
-                    width: 2
+                    width: 2 //TODO: Relative scaling
                     height: parent.height * 0.7
                     anchors.verticalCenter: parent.verticalCenter
                     color: "#34332B"
@@ -373,7 +373,7 @@ ColumnLayout {
 
                 // Separator
                 Rectangle {
-                    width: 2
+                    width: 2 //TODO: Relative scaling
                     height: parent.height * 0.7
                     anchors.verticalCenter: parent.verticalCenter
                     color: "#34332B"
@@ -395,9 +395,9 @@ ColumnLayout {
                 anchors.right: parent.right
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
-                anchors.rightMargin: 60
+                anchors.rightMargin: 60 //TODO: Relative scaling
                 exposedLogin: input.exposeLogin
-                spacing: 20
+                spacing: 20 //TODO: Relative scaling
             }
         }
 
@@ -423,8 +423,8 @@ ColumnLayout {
         layer.enabled: true
         layer.effect: DropShadow {
             transparentBorder: true
-            horizontalOffset: 4
-            verticalOffset: 4
+            horizontalOffset: 4 //TODO: Relative scaling
+            verticalOffset: 4 //TODO: Relative scaling
             radius: 0
             samples: 17
             color: "#45000000"
@@ -444,8 +444,8 @@ ColumnLayout {
             id: infoBoardSlideIn
             target: infoBoard.anchors
             property: "bottomMargin"
-            from: -60
-            to: 110
+            from: -60 //TODO: Relative scaling
+            to: 110 //TODO: Relative scaling
             duration: 600
             easing.type: Easing.OutCubic
         }

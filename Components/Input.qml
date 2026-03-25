@@ -41,16 +41,16 @@ Column {
         property int usernameCharIndex: 0
 
         height: root.font.pointSize * 5
-        width: 500
+        width: 500 //TODO: Relative scaling
         anchors.left: parent.left
 
         // VERTICAL BAR
         Image {
             id: usernameVerticalBar
             anchors.right: parent.left
-            anchors.rightMargin: -21
+            anchors.rightMargin: -21 //TODO: Relative scaling
             anchors.verticalCenter: loginButton.verticalCenter
-            width: 30
+            width: 30 //TODO: Relative scaling
             height: parent.height
             source: Qt.resolvedUrl("../Assets/vertical_bar.png")
             opacity: 0
@@ -60,10 +60,10 @@ Column {
         Image {
             id: usernameFocusPointer
             anchors.right: username.left
-            anchors.rightMargin: 10
+            anchors.rightMargin: 10 //TODO: Relative scaling
             anchors.verticalCenter: username.verticalCenter
-            width: 40
-            height: 27
+            width: 40 //TODO: Relative scaling
+            height: 27 //TODO: Relative scaling
             source: Qt.resolvedUrl("../Assets/focus_pointer.png")
             opacity: username.activeFocus ? 0.63 : 0
             visible: opacity > 0
@@ -78,8 +78,8 @@ Column {
         // SIDEBARS
         Rectangle {
             id: usernameUpwardsSidebar
-            width: 389
-            height: 2
+            width: 389 //TODO: Relative scaling
+            height: 2 //TODO: Relative scaling
             anchors.bottom: username.top
             anchors.bottomMargin: -2
             anchors.horizontalCenter: username.horizontalCenter
@@ -96,8 +96,8 @@ Column {
         
         Rectangle {
             id: usernameDownwardsSidebar
-            width: 389
-            height: 2
+            width: 389 //TODO: Relative scaling
+            height: 2 //TODO: Relative scaling
             anchors.top: username.bottom
             anchors.topMargin: -2
             anchors.horizontalCenter: username.horizontalCenter
@@ -118,9 +118,9 @@ Column {
             anchors.left: parent.left
             anchors.top: username.top
             anchors.bottom: username.bottom
-            anchors.leftMargin: 7
-            anchors.topMargin: 12
-            anchors.bottomMargin: 12
+            anchors.leftMargin: 7 //TODO: Relative scaling
+            anchors.topMargin: 12 //TODO: Relative scaling
+            anchors.bottomMargin: 12 //TODO: Relative scaling
             width: height
             color: root.palette.text
             opacity: 0
@@ -134,9 +134,9 @@ Column {
             font.family: inputContainer.fontFamily
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
-            anchors.leftMargin: 55
-            height: 48 
-            width: 389 
+            anchors.leftMargin: 55 //TODO: Relative scaling
+            height: 48 //TODO: Relative scaling
+            width: 389 //TODO: Relative scaling 
             placeholderText: ""
             selectByMouse: true
             horizontalAlignment: TextInput.AlignLeft
@@ -208,12 +208,12 @@ Column {
                     }
                     PropertyChanges { // Pop out the sidebars
                         target: usernameUpwardsSidebar
-                        anchors.bottomMargin: 4
+                        anchors.bottomMargin: 4 //TODO: Relative scaling
                         opacity: 0.63
                     }
                     PropertyChanges { // Pop out the sidebars
                         target: usernameDownwardsSidebar
-                        anchors.topMargin: 4
+                        anchors.topMargin: 4 //TODO: Relative scaling
                         opacity: 0.63
                     }
                     PropertyChanges { // Highlight square
@@ -232,16 +232,16 @@ Column {
         property int passwordCharIndex: 0
         
         height: root.font.pointSize * 5
-        width: 500
+        width: 500 //TODO: Relative scaling
         anchors.left: parent.left
 
         // VERTICAL BAR
         Image {
             id: passwordVerticalBar
             anchors.right: parent.left
-            anchors.rightMargin: -21
+            anchors.rightMargin: -21 //TODO: Relative scaling
             anchors.verticalCenter: loginButton.verticalCenter
-            width: 30
+            width: 30 //TODO: Relative scaling
             height: parent.height
             source: Qt.resolvedUrl("../Assets/vertical_bar.png")
             opacity: 0
@@ -251,10 +251,10 @@ Column {
         Image {
             id: passwordFocusPointer
             anchors.right: password.left
-            anchors.rightMargin: 10
+            anchors.rightMargin: 10 //TODO: Relative scaling
             anchors.verticalCenter: password.verticalCenter
-            width: 40
-            height: 27
+            width: 40 //TODO: Relative scaling
+            height: 27 //TODO: Relative scaling
             source: Qt.resolvedUrl("../Assets/focus_pointer.png")
             opacity: password.activeFocus ? 0.63 : 0
             visible: opacity > 0
@@ -269,8 +269,8 @@ Column {
         // SIDEBARS
         Rectangle {
             id: passwordUpwardsSidebar
-            width: 389
-            height: 2
+            width: 389 //TODO: Relative scaling
+            height: 2 //TODO: Relative scaling
             anchors.bottom: password.top
             anchors.bottomMargin: -2
             anchors.horizontalCenter: password.horizontalCenter
@@ -287,8 +287,8 @@ Column {
         
         Rectangle {
             id: passwordDownwardsSidebar
-            width: 389
-            height: 2
+            width: 389 //TODO: Relative scaling
+            height: 2 //TODO: Relative scaling
             anchors.top: password.bottom
             anchors.topMargin: -2
             anchors.horizontalCenter: password.horizontalCenter
@@ -309,9 +309,9 @@ Column {
             anchors.left: parent.left
             anchors.top: password.top
             anchors.bottom: password.bottom
-            anchors.leftMargin: 7
-            anchors.topMargin: 12
-            anchors.bottomMargin: 12
+            anchors.leftMargin: 7 //TODO: Relative scaling
+            anchors.topMargin: 12 //TODO: Relative scaling
+            anchors.bottomMargin: 12 //TODO: Relative scaling
             width: height
             color: root.palette.text
             opacity: 0
@@ -322,10 +322,10 @@ Column {
             id: password
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
-            anchors.leftMargin: 55
+            anchors.leftMargin: 55 //TODO: Relative scaling
             opacity: 0
-            height: 48
-            width: 389
+            height: 48 //TODO: Relative scaling
+            width: 389 //TODO: Relative scaling
             focus: false//config.ForcePasswordFocus == "true" ? true : false
             selectByMouse: true
             echoMode: TextInput.Password
@@ -396,12 +396,12 @@ Column {
                     }
                     PropertyChanges { // Pop out the sidebars
                         target: passwordUpwardsSidebar
-                        anchors.bottomMargin: 4
+                        anchors.bottomMargin: 4 //TODO: Relative scaling
                         opacity: 0.63
                     }
                     PropertyChanges { // Pop out the sidebars
                         target: passwordDownwardsSidebar
-                        anchors.topMargin: 4
+                        anchors.topMargin: 4 //TODO: Relative scaling
                         opacity: 0.63
                     }
                     PropertyChanges { // Change text color
@@ -424,7 +424,7 @@ Column {
         property int sessionSelectCharIndex: 0
         
         height: root.font.pointSize * 5
-        width: 500
+        width: 500 //TODO: Relative scaling
         anchors.left: parent.left
 
         KeyNavigation.down: loginButton
@@ -433,9 +433,9 @@ Column {
         Image {
             id: sessionVerticalBar
             anchors.right: parent.left
-            anchors.rightMargin: -21
+            anchors.rightMargin: -21 //TODO: Relative scaling
             anchors.verticalCenter: sessionSelect.verticalCenter
-            width: 30
+            width: 30 //TODO: Relative scaling
             height: parent.height
             source: Qt.resolvedUrl("../Assets/vertical_bar.png")
             opacity: 0
@@ -445,10 +445,10 @@ Column {
         Image {
             id: sessionFocusPointer
             anchors.right: sessionSelect.left
-            anchors.rightMargin: 10
+            anchors.rightMargin: 10 //TODO: Relative scaling
             anchors.verticalCenter: sessionSelect.verticalCenter
-            width: 40
-            height: 27
+            width: 40 //TODO: Relative scaling
+            height: 27 //TODO: Relative scaling
             source: Qt.resolvedUrl("../Assets/focus_pointer.png")
             opacity: sessionSelect.activeFocus ? 0.63 : 0
             visible: opacity > 0
@@ -463,8 +463,8 @@ Column {
         // SIDEBARS
         Rectangle {
             id: sessionUpwardsSidebar
-            width: 389
-            height: 2
+            width: 389 //TODO: Relative scaling
+            height: 2 //TODO: Relative scaling
             anchors.bottom: sessionSelect.top
             anchors.bottomMargin: -2
             anchors.right: sessionSelect.right
@@ -488,8 +488,8 @@ Column {
 
         Rectangle {
             id: sessionDownwardsSidebar
-            width: 389
-            height: 2
+            width: 389 //TODO: Relative scaling
+            height: 2 //TODO: Relative scaling
             anchors.top: sessionSelect.bottom
             anchors.topMargin: -2
             anchors.right: sessionSelect.right
@@ -517,9 +517,9 @@ Column {
             anchors.left: parent.left
             anchors.top: sessionSelect.top
             anchors.bottom: sessionSelect.bottom
-            anchors.leftMargin: 7
-            anchors.topMargin: 12
-            anchors.bottomMargin: 12
+            anchors.leftMargin: 7 //TODO: Relative scaling
+            anchors.topMargin: 12 //TODO: Relative scaling
+            anchors.bottomMargin: 12 //TODO: Relative scaling
             width: height
             color: root.palette.text
             opacity: 0
@@ -528,13 +528,13 @@ Column {
 
         SessionButton {
             id: sessionSelect
-            implicitWidth: 389
+            implicitWidth: 389 //TODO: Relative scaling
             anchors.left: parent.left
             focus: false
-            anchors.leftMargin: -5
+            anchors.leftMargin: -5 //TODO: Relative scaling
             opacity: 0
             anchors.verticalCenter: parent.verticalCenter
-            height: 48
+            height: 48 //TODO: Relative scaling
 
             onPopupOpenedChanged: {
                 if (!popupOpened) {
@@ -622,12 +622,12 @@ Column {
                 when: sessionSelect.visualFocus || sessionSelect.activeFocus
                 PropertyChanges { // Pop upwards sidebar
                     target: sessionUpwardsSidebar
-                    anchors.bottomMargin: 4
+                    anchors.bottomMargin: 4 //TODO: Relative scaling
                     opacity: 0.63
                 }
                 PropertyChanges { // Pop downwards sidebar
                     target: sessionDownwardsSidebar
-                    anchors.topMargin: 4
+                    anchors.topMargin: 4 //TODO: Relative scaling
                     opacity: 0.63
                 }
                 PropertyChanges { // Enable drop shadow
@@ -666,19 +666,19 @@ Column {
                 }
                 PropertyChanges { // Widen button
                     target: sessionSelect
-                    width: 389 + 30
+                    width: 389 + 30 //TODO: Relative scaling
                 }
                 PropertyChanges { // Pop upwards sidebar
                     target: sessionUpwardsSidebar
                     width: 0
                     opacity: 0.63
-                    anchors.bottomMargin: 4
+                    anchors.bottomMargin: 4 //TODO: Relative scaling
                 }
                 PropertyChanges { // Pop downwards sidebar
                     target: sessionDownwardsSidebar
                     width: 0
                     opacity: 0.63
-                    anchors.topMargin: 4
+                    anchors.topMargin: 4 //TODO: Relative scaling
                 }
                 PropertyChanges { // Highlight text
                     target: sessionText
@@ -696,7 +696,7 @@ Column {
     Item {
         id: login
         height: root.font.pointSize * 5
-        width: 500
+        width: 500 //TODO: Relative scaling
         anchors.left: parent.left
 
         property int loginCharIndex: 0
@@ -706,9 +706,9 @@ Column {
         Image {
             id: loginVerticalBar
             anchors.right: parent.left
-            anchors.rightMargin: -21
+            anchors.rightMargin: -21 //TODO: Relative scaling
             anchors.verticalCenter: loginButton.verticalCenter
-            width: 30
+            width: 30 //TODO: Relative scaling
             height: parent.height
             source: Qt.resolvedUrl("../Assets/vertical_bar.png")
             opacity: 0
@@ -718,10 +718,10 @@ Column {
         Image {
             id: loginFocusPointer
             anchors.right: loginButton.left
-            anchors.rightMargin: 10
+            anchors.rightMargin: 10 //TODO: Relative scaling
             anchors.verticalCenter: login.verticalCenter
-            width: 40
-            height: 27
+            width: 40 //TODO: Relative scaling
+            height: 27 //TODO: Relative scaling
             source: Qt.resolvedUrl("../Assets/focus_pointer.png")
             opacity: loginButton.activeFocus ? 0.63 : 0
             visible: opacity > 0
@@ -736,8 +736,8 @@ Column {
         // SIDEBARS
         Rectangle {
             id: loginUpwardsSidebar
-            width: 389
-            height: 2
+            width: 389 //TODO: Relative scaling
+            height: 2 //TODO: Relative scaling
             anchors.bottom: loginButton.top
             anchors.bottomMargin: -2
             anchors.horizontalCenter: loginButton.horizontalCenter
@@ -754,8 +754,8 @@ Column {
 
         Rectangle {
             id: loginDownwardsSidebar
-            width: 389
-            height: 2
+            width: 389 //TODO: Relative scaling
+            height: 2 //TODO: Relative scaling
             anchors.top: loginButton.bottom
             anchors.topMargin: -2
             anchors.horizontalCenter: loginButton.horizontalCenter
@@ -777,8 +777,8 @@ Column {
             anchors.top: loginButton.top
             anchors.bottom: loginButton.bottom
             anchors.leftMargin: -root.width
-            anchors.topMargin: 12
-            anchors.bottomMargin: 12
+            anchors.topMargin: 12 //TODO: Relative scaling
+            anchors.bottomMargin: 12 //TODO: Relative scaling
             width: height
             color: root.palette.text
             opacity: login.opacityMultiplier
@@ -788,11 +788,11 @@ Column {
         Button {
             id: loginButton
             anchors.left: parent.left
-            anchors.leftMargin: -5
+            anchors.leftMargin: -5 //TODO: Relative scaling
             anchors.verticalCenter: parent.verticalCenter
             text: "Login"
-            height: 48
-            width: 389
+            height: 48 //TODO: Relative scaling
+            width: 389 //TODO: Relative scaling
             implicitWidth: parent.width
             enabled: true
             hoverEnabled: true
@@ -800,7 +800,7 @@ Column {
 
             contentItem: Text {
                 text: inputContainer.formFunctions.getTypewriterText(loginButton.text, login.loginCharIndex)
-                leftPadding: loginSquare.width + 24 - 7
+                leftPadding: loginSquare.width + 24 - 7 //TODO: Relative scaling
                 color: root.palette.text
                 opacity: login.opacityMultiplier
                 font.pointSize: root.font.pointSize
@@ -882,12 +882,12 @@ Column {
                     }
                     PropertyChanges {
                         target: loginUpwardsSidebar
-                        anchors.bottomMargin: 4
+                        anchors.bottomMargin: 4 //TODO: Relative scaling
                         opacity: 0.63 * login.opacityMultiplier
                     }
                     PropertyChanges {
                         target: loginDownwardsSidebar
-                        anchors.topMargin: 4
+                        anchors.topMargin: 4 //TODO: Relative scaling
                         opacity: 0.63 * login.opacityMultiplier
                     }
                 }
@@ -972,8 +972,8 @@ Column {
                 NumberAnimation {
                     target: usernameSquare.anchors
                     property: "leftMargin"
-                    from: 7
-                    to: 67
+                    from: 7 //TODO: Relative scaling
+                    to: 67 //TODO: Relative scaling
                     duration: 200
                 }
 
@@ -988,8 +988,8 @@ Column {
                 NumberAnimation {
                     target: username.anchors
                     property: "leftMargin"
-                    from: -5
-                    to: 55
+                    from: -5 //TODO: Relative scaling
+                    to: 55 //TODO: Relative scaling
                     duration: 200
                 }
 
@@ -1023,8 +1023,8 @@ Column {
                 NumberAnimation {
                     target: passwordSquare.anchors
                     property: "leftMargin"
-                    from: 7
-                    to: 67
+                    from: 7 //TODO: Relative scaling
+                    to: 67 //TODO: Relative scaling
                     duration: 200
                 }
 
@@ -1039,8 +1039,8 @@ Column {
                 NumberAnimation {
                     target: password.anchors
                     property: "leftMargin"
-                    from: -5
-                    to: 55
+                    from: -5 //TODO: Relative scaling
+                    to: 55 //TODO: Relative scaling
                     duration: 200
                 }
 
@@ -1078,8 +1078,8 @@ Column {
                 NumberAnimation {
                     target: sessionSquare.anchors
                     property: "leftMargin"
-                    from: 7
-                    to: 67
+                    from: 7 //TODO: Relative scaling
+                    to: 67 //TODO: Relative scaling
                     duration: 200
                 }
 
@@ -1094,8 +1094,8 @@ Column {
                 NumberAnimation {
                     target: sessionSelect.anchors
                     property: "leftMargin"
-                    from: -5
-                    to: 55
+                    from: -5 //TODO: Relative scaling
+                    to: 55 //TODO: Relative scaling
                     duration: 200
                 }
 
@@ -1128,8 +1128,8 @@ Column {
                 NumberAnimation {
                     target: loginSquare.anchors
                     property: "leftMargin"
-                    from: 7
-                    to: 67
+                    from: 7 //TODO: Relative scaling
+                    to: 67 //TODO: Relative scaling
                     duration: 200
                 }
 
@@ -1144,8 +1144,8 @@ Column {
                 NumberAnimation {
                     target: loginButton.anchors
                     property: "leftMargin"
-                    from: -5
-                    to: 55
+                    from: -5 //TODO: Relative scaling
+                    to: 55 //TODO: Relative scaling
                     duration: 200
                 }
 

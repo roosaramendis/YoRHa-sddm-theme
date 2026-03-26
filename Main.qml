@@ -226,25 +226,24 @@ Pane {
 
         // BOTTOM CORNER
         // DIAGONAL LINES
-        Image {
+        Rectangle {
             id: firstDiagonalBar
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
-            anchors.rightMargin: -100
-            anchors.bottomMargin: -120
-            source: "Assets/diagonal_line.png"
-            opacity: 0.13
-            fillMode: Image.PreserveAspectCrop
-            horizontalAlignment: Image.AlignRight
-            verticalAlignment: Image.AlignBottom
+            anchors.horizontalCenter: parent.right
+            anchors.verticalCenter: parent.bottom
+            anchors.horizontalCenterOffset: -100
+            anchors.verticalCenterOffset: -120
             width: 0
+            height: 4
+            color: "#3d3b34"
+            rotation: 45
+            opacity: 0.13
 
             NumberAnimation {
                 id: firstDiagonalBarWidthAnim
                 target: firstDiagonalBar
                 property: "width"
                 from: 0
-                to: 1200
+                to: 3000
                 duration: 800
                 easing.type: Easing.Linear
             }
@@ -252,11 +251,11 @@ Pane {
             PropertyAnimation {
                 id: rightMarginAnim
                 target: firstDiagonalBar.anchors
-                property: "rightMargin"
+                property: "horizontalCenterOffset"
                 duration: 3000
                 easing.type: Easing.InOutSine
                 onStopped: {
-                    rightMarginAnim.from = firstDiagonalBar.anchors.rightMargin;
+                    rightMarginAnim.from = firstDiagonalBar.anchors.horizontalCenterOffset;
                     rightMarginAnim.to = Math.random() * 20 - 100;
                     rightMarginAnim.start();
                 }
@@ -265,58 +264,57 @@ Pane {
             PropertyAnimation {
                 id: bottomMarginAnim
                 target: firstDiagonalBar.anchors
-                property: "bottomMargin"
+                property: "verticalCenterOffset"
                 duration: 3000
                 easing.type: Easing.InOutSine
                 onStopped: {
-                    bottomMarginAnim.from = firstDiagonalBar.anchors.bottomMargin;
+                    bottomMarginAnim.from = firstDiagonalBar.anchors.verticalCenterOffset;
                     bottomMarginAnim.to = Math.random() * 20 - 120;
                     bottomMarginAnim.start();
                 }
             }
 
             Component.onCompleted: {
-                rightMarginAnim.from = firstDiagonalBar.anchors.rightMargin;
+                rightMarginAnim.from = firstDiagonalBar.anchors.horizontalCenterOffset;
                 rightMarginAnim.to = Math.random() * 20 - 100;
                 rightMarginAnim.start();
 
-                bottomMarginAnim.from = firstDiagonalBar.anchors.bottomMargin;
+                bottomMarginAnim.from = firstDiagonalBar.anchors.verticalCenterOffset;
                 bottomMarginAnim.to = Math.random() * 20 - 120;
                 bottomMarginAnim.start();
             }
         }
 
-        Image {
+        Rectangle {
             id: secondDiagonalBar
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
-            anchors.rightMargin: -80
-            anchors.bottomMargin: -20
-            source: "Assets/diagonal_line.png"
-            opacity: 0.13
-            fillMode: Image.PreserveAspectCrop
-            horizontalAlignment: Image.AlignRight
-            verticalAlignment: Image.AlignBottom
+            anchors.horizontalCenter: parent.right
+            anchors.verticalCenter: parent.bottom
+            anchors.horizontalCenterOffset: -80
+            anchors.verticalCenterOffset: -20
             width: 0
+            height: 4
+            color: "#3d3b34"
+            rotation: 45
+            opacity: 0.13
 
             NumberAnimation {
                 id: secondDiagonalBarWidthAnim
                 target: secondDiagonalBar
                 property: "width"
                 from: 0
-                to: 1200
+                to: 3000
                 duration: 800
-                easing.type: Easing.Linear
+                easing.type: Easing.OutCubic
             }
 
             PropertyAnimation {
                 id: rightMarginAnim2
                 target: secondDiagonalBar.anchors
-                property: "rightMargin"
+                property: "horizontalCenterOffset"
                 duration: 3000
                 easing.type: Easing.InOutSine
                 onStopped: {
-                    rightMarginAnim2.from = secondDiagonalBar.anchors.rightMargin;
+                    rightMarginAnim2.from = secondDiagonalBar.anchors.horizontalCenterOffset;
                     rightMarginAnim2.to = Math.random() * 20 - 80;
                     rightMarginAnim2.start();
                 }
@@ -325,46 +323,45 @@ Pane {
             PropertyAnimation {
                 id: bottomMarginAnim2
                 target: secondDiagonalBar.anchors
-                property: "bottomMargin"
+                property: "verticalCenterOffset"
                 duration: 3000
                 easing.type: Easing.InOutSine
                 onStopped: {
-                    bottomMarginAnim2.from = secondDiagonalBar.anchors.bottomMargin;
+                    bottomMarginAnim2.from = secondDiagonalBar.anchors.verticalCenterOffset;
                     bottomMarginAnim2.to = Math.random() * 20 - 20;
                     bottomMarginAnim2.start();
                 }
             }
 
             Component.onCompleted: {
-                rightMarginAnim2.from = secondDiagonalBar.anchors.rightMargin;
+                rightMarginAnim2.from = secondDiagonalBar.anchors.horizontalCenterOffset;
                 rightMarginAnim2.to = Math.random() * 20 - 80;
                 rightMarginAnim2.start();
 
-                bottomMarginAnim2.from = secondDiagonalBar.anchors.bottomMargin;
+                bottomMarginAnim2.from = secondDiagonalBar.anchors.verticalCenterOffset;
                 bottomMarginAnim2.to = Math.random() * 20 - 20;
                 bottomMarginAnim2.start();
             }
         }
 
-        Image {
+        Rectangle {
             id: thirdDiagonalBar
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
-            anchors.rightMargin: -300
-            anchors.bottomMargin: -120
-            source: "Assets/diagonal_line.png"
-            opacity: 0.13
-            fillMode: Image.PreserveAspectCrop
-            horizontalAlignment: Image.AlignRight
-            verticalAlignment: Image.AlignBottom
+            anchors.horizontalCenter: parent.right
+            anchors.verticalCenter: parent.bottom
+            anchors.horizontalCenterOffset: 40
+            anchors.verticalCenterOffset: -100
             width: 0
+            height: 4
+            color: "#3d3b34"
+            rotation: 45
+            opacity: 0.13
 
             NumberAnimation {
                 id: thirdDiagonalBarWidthAnim
                 target: thirdDiagonalBar
                 property: "width"
                 from: 0
-                to: 1200
+                to: 3000
                 duration: 800
                 easing.type: Easing.Linear
             }
@@ -372,12 +369,12 @@ Pane {
             PropertyAnimation {
                 id: rightMarginAnim3
                 target: thirdDiagonalBar.anchors
-                property: "rightMargin"
+                property: "horizontalCenterOffset"
                 duration: 3000
                 easing.type: Easing.InOutSine
                 onStopped: {
-                    rightMarginAnim3.from = thirdDiagonalBar.anchors.rightMargin;
-                    rightMarginAnim3.to = Math.random() * 20 - 300;
+                    rightMarginAnim3.from = thirdDiagonalBar.anchors.horizontalCenterOffset;
+                    rightMarginAnim3.to = Math.random() * 20 + 40;
                     rightMarginAnim3.start();
                 }
             }
@@ -385,23 +382,23 @@ Pane {
             PropertyAnimation {
                 id: bottomMarginAnim3
                 target: thirdDiagonalBar.anchors
-                property: "bottomMargin"
+                property: "verticalCenterOffset"
                 duration: 3000
                 easing.type: Easing.InOutSine
                 onStopped: {
-                    bottomMarginAnim3.from = thirdDiagonalBar.anchors.bottomMargin;
-                    bottomMarginAnim3.to = Math.random() * 20 - 120;
+                    bottomMarginAnim3.from = thirdDiagonalBar.anchors.verticalCenterOffset;
+                    bottomMarginAnim3.to = Math.random() * 20 - 100;
                     bottomMarginAnim3.start();
                 }
             }
 
             Component.onCompleted: {
-                rightMarginAnim3.from = thirdDiagonalBar.anchors.rightMargin;
-                rightMarginAnim3.to = Math.random() * 20 - 300;
+                rightMarginAnim3.from = thirdDiagonalBar.anchors.horizontalCenterOffset;
+                rightMarginAnim3.to = Math.random() * 20 + 40;
                 rightMarginAnim3.start();
 
-                bottomMarginAnim3.from = thirdDiagonalBar.anchors.bottomMargin;
-                bottomMarginAnim3.to = Math.random() * 20 - 120;
+                bottomMarginAnim3.from = thirdDiagonalBar.anchors.verticalCenterOffset;
+                bottomMarginAnim3.to = Math.random() * 20 - 100;
                 bottomMarginAnim3.start();
             }
         }
@@ -451,25 +448,24 @@ Pane {
 
         // TOP CORNER
         // DIAGONAL LINES
-        Image {
+        Rectangle {
             id: firstTopDiagonalBar
-            anchors.left: parent.left
-            anchors.top: parent.top
-            anchors.leftMargin: -180
-            anchors.topMargin: -220
-            source: "Assets/diagonal_line.png"
-            fillMode: Image.PreserveAspectCrop
-            horizontalAlignment: Image.AlignLeft
-            verticalAlignment: Image.AlignTop
-            opacity: 0.13
+            anchors.horizontalCenter: parent.left
+            anchors.verticalCenter: parent.top
+            anchors.horizontalCenterOffset: 40
+            anchors.verticalCenterOffset: -20
             width: 0
+            height: 4
+            color: "#3d3b34"
+            rotation: 45
+            opacity: 0.13
 
             NumberAnimation {
                 id: firstTopDiagonalBarWidthAnim
                 target: firstTopDiagonalBar
                 property: "width"
                 from: 0
-                to: 1200
+                to: 3000
                 duration: 800
                 easing.type: Easing.Linear
             }
@@ -477,12 +473,12 @@ Pane {
             PropertyAnimation {
                 id: leftMarginAnim
                 target: firstTopDiagonalBar.anchors
-                property: "leftMargin"
+                property: "horizontalCenterOffset"
                 duration: 3000
                 easing.type: Easing.InOutSine
                 onStopped: {
-                    leftMarginAnim.from = firstTopDiagonalBar.anchors.leftMargin;
-                    leftMarginAnim.to = Math.random() * 20 - 180;
+                    leftMarginAnim.from = firstTopDiagonalBar.anchors.horizontalCenterOffset;
+                    leftMarginAnim.to = Math.random() * 20 + 40;
                     leftMarginAnim.start();
                 }
             }
@@ -490,46 +486,45 @@ Pane {
             PropertyAnimation {
                 id: topMarginAnim
                 target: firstTopDiagonalBar.anchors
-                property: "topMargin"
+                property: "verticalCenterOffset"
                 duration: 3000
                 easing.type: Easing.InOutSine
                 onStopped: {
-                    topMarginAnim.from = firstTopDiagonalBar.anchors.topMargin;
-                    topMarginAnim.to = Math.random() * 20 - 220;
+                    topMarginAnim.from = firstTopDiagonalBar.anchors.verticalCenterOffset;
+                    topMarginAnim.to = Math.random() * 20 - 20;
                     topMarginAnim.start();
                 }
             }
 
             Component.onCompleted: {
-                leftMarginAnim.from = firstTopDiagonalBar.anchors.leftMargin;
-                leftMarginAnim.to = Math.random() * 20 - 180;
+                leftMarginAnim.from = firstTopDiagonalBar.anchors.horizontalCenterOffset;
+                leftMarginAnim.to = Math.random() * 20 + 40;
                 leftMarginAnim.start();
 
-                topMarginAnim.from = firstTopDiagonalBar.anchors.topMargin;
-                topMarginAnim.to = Math.random() * 20 - 220;
+                topMarginAnim.from = firstTopDiagonalBar.anchors.verticalCenterOffset;
+                topMarginAnim.to = Math.random() * 20 - 20;
                 topMarginAnim.start();
             }
         }
 
-        Image {
+        Rectangle {
             id: secondTopDiagonalBar
-            anchors.left: parent.left
-            anchors.top: parent.top
-            anchors.leftMargin: -80
-            anchors.topMargin: -20
-            source: "Assets/diagonal_line.png"
+            anchors.horizontalCenter: parent.left
+            anchors.verticalCenter: parent.top
+            anchors.horizontalCenterOffset: 30
+            anchors.verticalCenterOffset: 90
             opacity: 0.13
-            fillMode: Image.PreserveAspectCrop
-            horizontalAlignment: Image.AlignLeft
-            verticalAlignment: Image.AlignTop
+            color: "#3d3b34"
             width: 0
+            height: 4
+            rotation: 45
 
             NumberAnimation {
                 id: secondTopDiagonalBarWidthAnim
                 target: secondTopDiagonalBar
                 property: "width"
                 from: 0
-                to: 1200
+                to: 3000
                 duration: 800
                 easing.type: Easing.Linear
             }
@@ -537,12 +532,12 @@ Pane {
             PropertyAnimation {
                 id: leftMarginAnim2
                 target: secondTopDiagonalBar.anchors
-                property: "leftMargin"
+                property: "horizontalCenterOffset"
                 duration: 3000
                 easing.type: Easing.InOutSine
                 onStopped: {
-                    leftMarginAnim2.from = secondTopDiagonalBar.anchors.leftMargin;
-                    leftMarginAnim2.to = Math.random() * 20 - 80;
+                    leftMarginAnim2.from = secondTopDiagonalBar.anchors.horizontalCenterOffset;
+                    leftMarginAnim2.to = Math.random() * 20 + 30;
                     leftMarginAnim2.start();
                 }
             }
@@ -550,46 +545,45 @@ Pane {
             PropertyAnimation {
                 id: topMarginAnim2
                 target: secondTopDiagonalBar.anchors
-                property: "topMargin"
+                property: "verticalCenterOffset"
                 duration: 3000
                 easing.type: Easing.InOutSine
                 onStopped: {
-                    topMarginAnim2.from = secondTopDiagonalBar.anchors.topMargin;
-                    topMarginAnim2.to = Math.random() * 20 - 20;
+                    topMarginAnim2.from = secondTopDiagonalBar.anchors.verticalCenterOffset;
+                    topMarginAnim2.to = Math.random() * 20 + 90;
                     topMarginAnim2.start();
                 }
             }
 
             Component.onCompleted: {
-                leftMarginAnim2.from = secondTopDiagonalBar.anchors.leftMargin;
-                leftMarginAnim2.to = Math.random() * 20 - 80;
+                leftMarginAnim2.from = secondTopDiagonalBar.anchors.horizontalCenterOffset;
+                leftMarginAnim2.to = Math.random() * 20 + 30;
                 leftMarginAnim2.start();
 
-                topMarginAnim2.from = secondTopDiagonalBar.anchors.topMargin;
-                topMarginAnim2.to = Math.random() * 20 - 20;
+                topMarginAnim2.from = secondTopDiagonalBar.anchors.verticalCenterOffset;
+                topMarginAnim2.to = Math.random() * 20 + 90;
                 topMarginAnim2.start();
             }
         }
 
-        Image {
+        Rectangle {
             id: thirdTopDiagonalBar
-            anchors.left: parent.left
-            anchors.top: parent.top
-            anchors.leftMargin: -180
-            anchors.topMargin: -60
-            source: "Assets/diagonal_line.png"
+            anchors.horizontalCenter: parent.left
+            anchors.verticalCenter: parent.top
+            anchors.horizontalCenterOffset: -20
+            anchors.verticalCenterOffset: 100
             opacity: 0.13
-            fillMode: Image.PreserveAspectCrop
-            horizontalAlignment: Image.AlignLeft
-            verticalAlignment: Image.AlignTop
+            color: "#3d3b34"
+            height: 4
             width: 0
+            rotation: 45
 
             NumberAnimation {
                 id: thirdTopDiagonalBarWidthAnim
                 target: thirdTopDiagonalBar
                 property: "width"
                 from: 0
-                to: 1200
+                to: 3000
                 duration: 800
                 easing.type: Easing.Linear
             }
@@ -602,7 +596,7 @@ Pane {
                 easing.type: Easing.InOutSine
                 onStopped: {
                     leftMarginAnim3.from = thirdTopDiagonalBar.anchors.leftMargin;
-                    leftMarginAnim3.to = Math.random() * 20 - 180;
+                    leftMarginAnim3.to = Math.random() * 20 - 20;
                     leftMarginAnim3.start();
                 }
             }
@@ -615,18 +609,18 @@ Pane {
                 easing.type: Easing.InOutSine
                 onStopped: {
                     topMarginAnim3.from = thirdTopDiagonalBar.anchors.topMargin;
-                    topMarginAnim3.to = Math.random() * 20 - 60;
+                    topMarginAnim3.to = Math.random() * 20 + 100;
                     topMarginAnim3.start();
                 }
             }
 
             Component.onCompleted: {
                 leftMarginAnim3.from = thirdTopDiagonalBar.anchors.leftMargin;
-                leftMarginAnim3.to = Math.random() * 20 - 180;
+                leftMarginAnim3.to = Math.random() * 20 - 20;
                 leftMarginAnim3.start();
 
                 topMarginAnim3.from = thirdTopDiagonalBar.anchors.topMargin;
-                topMarginAnim3.to = Math.random() * 20 - 60;
+                topMarginAnim3.to = Math.random() * 20 + 100;
                 topMarginAnim3.start();
             }
         }
@@ -693,14 +687,14 @@ Pane {
             onClicked: parent.forceActiveFocus()
         }
 
-        transform: Scale {
-            xScale: {
-                let scaleByWidth  = root.width  / sizeHelper.width
-                let scaleByHeight = root.height / sizeHelper.height
-                return Math.min(scaleByWidth, scaleByHeight)  // fit within screen
-            }
-            yScale: xScale
-        }
+        //transform: Scale {
+        //    xScale: {
+        //        let scaleByWidth  = root.width  / sizeHelper.width
+        //        let scaleByHeight = root.height / sizeHelper.height
+        //        return Math.min(scaleByWidth, scaleByHeight)  // fit within screen
+        //    }
+        //    yScale: xScale
+        //}
     }
 
     // Timer to fire the various animations in order

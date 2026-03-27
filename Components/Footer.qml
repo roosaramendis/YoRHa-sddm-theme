@@ -67,103 +67,87 @@ Rectangle {
         opacity: 0.7
     }
 
-    Row {
+    Row {  // Time & Date
         anchors.fill: parent
-        anchors.leftMargin: 60 //TODO: Relative scaling
+        anchors.margins: 45 //TODO: Relative scaling
+        spacing: 20 //TODO: Relative scaling
 
-        Row {  // Time & Date
-            anchors.left: parent.left
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            anchors.margins: 15 //TODO: Relative scaling
-            spacing: 20 //TODO: Relative scaling
+        // DATE
+        Text {
+            id: currentDate
+            anchors.verticalCenter: parent.verticalCenter
 
-            // DATE
-            Text {
-                id: currentDate
-                anchors.verticalCenter: parent.verticalCenter
-
-                property string date: {
-                    var date = new Date();
-                    var day = date.getDate();
-                    var suffix = "th";
-                    if (day % 10 === 1 && day !== 11) suffix = "st";
-                    else if (day % 10 === 2 && day !== 12) suffix = "nd";
-                    else if (day % 10 === 3 && day !== 13) suffix = "rd";
-                    var formattedDate = Qt.formatDate(date, config.dateFormat || "dddd, d of MMMM, yyyy");
-                    // Replace the day number with day+suffix
-                    formattedDate = formattedDate.replace(new RegExp("\\b" + day + "\\b"), day + suffix);
-                    return formattedDate
-                }
-
-                text: formFunctions.getTypewriterText(date, footer.typewriterCharIndex)
-                font.pointSize: 15 * 1.2
-                font.family: formContainer.fontFamily
-                color: "#34332B"
-                opacity: footer.typewriterCharIndex > 0 ? 0.8 : 0
+            property string date: {
+                var date = new Date();
+                var day = date.getDate();
+                var suffix = "th";
+                if (day % 10 === 1 && day !== 11) suffix = "st";
+                else if (day % 10 === 2 && day !== 12) suffix = "nd";
+                else if (day % 10 === 3 && day !== 13) suffix = "rd";
+                var formattedDate = Qt.formatDate(date, config.dateFormat || "dddd, d of MMMM, yyyy");
+                // Replace the day number with day+suffix
+                formattedDate = formattedDate.replace(new RegExp("\\b" + day + "\\b"), day + suffix);
+                return formattedDate
             }
 
-            // Separator
-            Rectangle {
-                width: 2 //TODO: Relative scaling
-                height: parent.height * 0.7
-                anchors.verticalCenter: parent.verticalCenter
-                color: "#34332B"
-                opacity: footer.typewriterCharIndex > currentDate.date.length ? 0.8 : 0
-            }
-
-            // TIME
-            Text {
-                id: currentTime
-                anchors.verticalCenter: parent.verticalCenter
-                font.pointSize: sizeHelper.height / 67
-                font.family: formContainer.fontFamily
-                color: "#34332B"
-
-                property string time: Qt.formatTime(new Date(), "HH:mm")
-
-                text: formFunctions.getTypewriterText(currentTime.time, footer.typewriterCharIndex - currentDate.date.length - 1)
-                opacity: footer.typewriterCharIndex > currentDate.date.length + 1 ? 0.8 : 0
-            }
-
-            // Separator
-            Rectangle {
-                width: 2 //TODO: Relative scaling
-                height: parent.height * 0.7
-                anchors.verticalCenter: parent.verticalCenter
-                color: "#34332B"
-                opacity: footer.typewriterCharIndex > currentDate.date.length + currentTime.time.length + 1 ? 0.8 : 0
-            }
-
-            // Optional: System info section
-            Text {
-                id: systemInfo
-                anchors.verticalCenter: parent.verticalCenter
-                font.pointSize: sizeHelper.height / 67
-                font.family: formContainer.fontFamily
-                color: "#34332B"
-                opacity: footer.typewriterCharIndex > currentDate.date.length + currentTime.time.length + 2 ? 0.8 : 0
-
-                property string system: (sddm.hostName || "YoRHa") + " System"
-
-                text: formFunctions.getTypewriterText(systemInfo.system, footer.typewriterCharIndex - currentDate.date.length - currentTime.time.length - 2)
-            }
+            text: formFunctions.getTypewriterText(date, footer.typewriterCharIndex)
+            font.pointSize: 15 * 1.2
+            font.family: formContainer.fontFamily
+            color: "#34332B"
+            opacity: footer.typewriterCharIndex > 0 ? 0.8 : 0
         }
 
-        SystemButtons {
-            anchors.right: parent.right
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            anchors.rightMargin: 60 //TODO: Relative scaling
-            exposedLogin: input.exposeLogin
-            spacing: 20 //TODO: Relative scaling
+        // Separator
+        Rectangle {
+            width: 2 //TODO: Relative scaling
+            height: footer.height * 0.7
+            anchors.verticalCenter: parent.verticalCenter
+            color: "#34332B"
+            opacity: footer.typewriterCharIndex > currentDate.date.length ? 0.8 : 0
+        }
+
+        // TIME
+        Text {
+            id: currentTime
+            anchors.verticalCenter: parent.verticalCenter
+            font.pointSize: sizeHelper.height / 67
+            font.family: formContainer.fontFamily
+            color: "#34332B"
+
+            property string time: Qt.formatTime(new Date(), "HH:mm")
+
+            text: formFunctions.getTypewriterText(currentTime.time, footer.typewriterCharIndex - currentDate.date.length - 1)
+            opacity: footer.typewriterCharIndex > currentDate.date.length + 1 ? 0.8 : 0
+        }
+
+        // Separator
+        Rectangle {
+            width: 2 //TODO: Relative scaling
+            height: footer.height * 0.7
+            anchors.verticalCenter: parent.verticalCenter
+            color: "#34332B"
+            opacity: footer.typewriterCharIndex > currentDate.date.length + currentTime.time.length + 1 ? 0.8 : 0
+        }
+
+        // Optional: System info section
+        Text {
+            id: systemInfo
+            anchors.verticalCenter: parent.verticalCenter
+            font.pointSize: sizeHelper.height / 67
+            font.family: formContainer.fontFamily
+            color: "#34332B"
+            opacity: footer.typewriterCharIndex > currentDate.date.length + currentTime.time.length + 2 ? 0.8 : 0
+
+            property string system: (sddm.hostName || "YoRHa") + " System"
+
+            text: formFunctions.getTypewriterText(systemInfo.system, footer.typewriterCharIndex - currentDate.date.length - currentTime.time.length - 2)
         }
     }
 
     SequentialAnimation {
         id: typewriterForward
 
-        PauseAnimation { duration: 600 }
+        PauseAnimation { duration: 100 }
 
         NumberAnimation {
             target: footer

@@ -27,6 +27,7 @@ import QtGraphicalEffects 1.0
 ColumnLayout {
     id: formContainer
     anchors.fill: parent
+    anchors.topMargin: 60 //TODO: Relative scaling
     anchors.leftMargin: 63 //TODO: Relative scaling
     anchors.rightMargin: 63 //TODO: Relative scaling
 
@@ -35,13 +36,13 @@ ColumnLayout {
     FontLoader {
         id: rodinFont
         source: Qt.resolvedUrl("../fonts/Rodin-Pro-M.otf")
-    }    
+    }
 
     property alias header: header
     property alias input: input
     property alias avatarContainer: avatarContainer
-    property alias infoBoard: infoBoard
-    //TODO: Footer typewriter effect
+
+    required property PanelButton loginPanelButton
 
     property string fontFamily: rodinFont.name || "Arial"
 
@@ -140,12 +141,15 @@ ColumnLayout {
         Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
         Layout.fillWidth: true
         Layout.preferredHeight: sizeHelper.height / 10
-        Layout.leftMargin: 10 //TODO: Relative scaling
+        Layout.leftMargin: 10 //TODO: Relative 
+
         // INPUT - Input fields aligned to the left
         Input {
             id: input
             anchors.verticalCenter: parent.verticalCenter
             fontFamily: formContainer.fontFamily
+
+            loginPanelButton: formContainer.loginPanelButton
         }
 
         Item {
@@ -422,77 +426,6 @@ ColumnLayout {
                     avatarContainerSlideOut.start()
                 }
             }
-        }
-    }
-
-    // INFOBOARD - Box with current time and date, fills horizontally
-    Footer {
-        id: infoBoard
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 0 // Gets modified by animation
-        opacity: 0 // Gets modified by animation
-
-        function spawn() {
-            infoBoardFadeIn.start()
-            infoBoardSlideIn.start()
-            infoBoard.typewriterForward.start()
-        }
-
-        function despawn() {
-            infoBoard.typewriterForward.stop()
-            infoBoard.typewriterBackward.start()
-            infoBoardFadeOut.start()
-            infoBoardSlideOut.start()
-        }
-    }
-
-    NumberAnimation {
-        id: infoBoardFadeIn
-        target: infoBoard
-        property: "opacity"
-        from: 0
-        to: 1
-        duration: 600
-        easing.type: Easing.OutCubic
-    }
-
-    NumberAnimation {
-        id: infoBoardSlideIn
-        target: infoBoard.anchors
-        property: "bottomMargin"
-        from: -60 //TODO: Relative scaling
-        to: 110 //TODO: Relative scaling
-        duration: 600
-        easing.type: Easing.OutCubic
-    }
-
-    SequentialAnimation {
-        id: infoBoardFadeOut
-
-        PauseAnimation { duration: 400 }
-
-        NumberAnimation {
-            target: infoBoard
-            property: "opacity"
-            from: 1
-            to: 0
-            duration: 600
-            easing.type: Easing.OutCubic
-        }
-    }
-
-    SequentialAnimation {
-        id: infoBoardSlideOut
-
-        PauseAnimation { duration: 400 }
-
-        NumberAnimation {
-            target: infoBoard.anchors
-            property: "bottomMargin"
-            from: 110 //TODO: Relative scaling
-            to: -60 //TODO: Relative scaling
-            duration: 600
-            easing.type: Easing.OutCubic
         }
     }
 }

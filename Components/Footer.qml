@@ -30,11 +30,24 @@ Rectangle {
     Layout.fillWidth: true
     Layout.preferredHeight: 80 //TODO: Relative scaling
 
-    property var formFunctions: parent
     property int typewriterCharIndex: 0
 
     property alias typewriterForward: typewriterForward
     property alias typewriterBackward: typewriterBackward
+
+    function getTypewriterText(fullText, charCount) {
+        var chars = "abcdefghijklmnopqrstuvwxyz";
+        var typed = fullText.substring(0, Math.min(charCount, fullText.length));
+
+        if (charCount < fullText.length ) {
+            if (fullText.charAt(typed.length) == fullText.charAt(typed.length).toUpperCase()) { // next character is uppercase, probably a new word, add a space for better readability
+                typed += chars.charAt(Math.floor(Math.random() * chars.length)).toUpperCase();
+            } else {
+                typed += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+        }
+        return typed;
+    }
 
     // Fakeass dropshadow effect
     Rectangle {
@@ -44,7 +57,7 @@ Rectangle {
         anchors.rightMargin: -4
         anchors.bottomMargin: -4
         color: "#45000000"
-        z: parent.z - 1
+        z: -1
     }
 
     Image { //TODO: Use 2 rects instead
@@ -90,8 +103,8 @@ Rectangle {
                 return formattedDate
             }
 
-            text: formFunctions.getTypewriterText(date, footer.typewriterCharIndex)
-            font.pointSize: 15 * 1.2
+            text: getTypewriterText(date, footer.typewriterCharIndex)
+            font.pointSize: 18
             font.family: formContainer.fontFamily
             color: "#34332B"
             opacity: footer.typewriterCharIndex > 0 ? 0.8 : 0
@@ -103,20 +116,20 @@ Rectangle {
             height: footer.height * 0.7
             anchors.verticalCenter: parent.verticalCenter
             color: "#34332B"
-            opacity: footer.typewriterCharIndex > currentDate.date.length ? 0.8 : 0
+            opacity: footer.typewriterCharIndex > currentDate.date.length ? 0.6 : 0
         }
 
         // TIME
         Text {
             id: currentTime
             anchors.verticalCenter: parent.verticalCenter
-            font.pointSize: sizeHelper.height / 67
+            font.pointSize: 18
             font.family: formContainer.fontFamily
             color: "#34332B"
 
             property string time: Qt.formatTime(new Date(), "HH:mm")
 
-            text: formFunctions.getTypewriterText(currentTime.time, footer.typewriterCharIndex - currentDate.date.length - 1)
+            text: getTypewriterText(currentTime.time, footer.typewriterCharIndex - currentDate.date.length - 1)
             opacity: footer.typewriterCharIndex > currentDate.date.length + 1 ? 0.8 : 0
         }
 
@@ -126,21 +139,21 @@ Rectangle {
             height: footer.height * 0.7
             anchors.verticalCenter: parent.verticalCenter
             color: "#34332B"
-            opacity: footer.typewriterCharIndex > currentDate.date.length + currentTime.time.length + 1 ? 0.8 : 0
+            opacity: footer.typewriterCharIndex > currentDate.date.length + currentTime.time.length + 1 ? 0.6 : 0
         }
 
-        // Optional: System info section
+        // System info section
         Text {
             id: systemInfo
             anchors.verticalCenter: parent.verticalCenter
-            font.pointSize: sizeHelper.height / 67
+            font.pointSize: 18
             font.family: formContainer.fontFamily
             color: "#34332B"
             opacity: footer.typewriterCharIndex > currentDate.date.length + currentTime.time.length + 2 ? 0.8 : 0
 
             property string system: (sddm.hostName || "YoRHa") + " System"
 
-            text: formFunctions.getTypewriterText(systemInfo.system, footer.typewriterCharIndex - currentDate.date.length - currentTime.time.length - 2)
+            text: getTypewriterText(systemInfo.system, footer.typewriterCharIndex - currentDate.date.length - currentTime.time.length - 2)
         }
     }
 

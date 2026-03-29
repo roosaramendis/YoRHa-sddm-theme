@@ -52,19 +52,14 @@ Column {
     property string fontFamily: "Arial"
     property var formFunctions: parent.parent
 
+    required property PanelButton loginPanelButton
+
     function spawn() {
         spawnAnimationSequence.start()
     }
 
     function despawn() {
         despawnAnimationSequence.start()
-    }
-
-    // Disable Tab navigation
-    Keys.onPressed: {
-        if (event.key === Qt.Key_Tab) {
-            event.accepted = true
-        }
     }
 
     // USERNAME INPUT
@@ -163,8 +158,11 @@ Column {
         TextField {
             id: username
             text: config.ForceLastUser === "true" ? userModel.lastUser : ""
-            font.capitalization: Font.Capitalize
+            //font.capitalization: Font.Capitalize
+            
             font.family: inputContainer.fontFamily
+            font.pointSize: 15
+
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
             anchors.leftMargin: 55 //TODO: Relative scaling
@@ -221,10 +219,18 @@ Column {
 
             Keys.onReturnPressed: loginButton.clicked()
             KeyNavigation.down: password
+            KeyNavigation.up: loginPanelButton.button
+
             Keys.onDownPressed: {
                 fieldFocusSound.play()
-                KeyNavigation.down.forceActiveFocus()
+                password.forceActiveFocus()
             }
+
+            Keys.onUpPressed: {
+                fieldFocusSound.play()
+                loginPanelButton.button.forceActiveFocus()
+            }
+
             z: 1
 
             states: [
@@ -366,11 +372,11 @@ Column {
             width: 389 //TODO: Relative scaling
             focus: false
             anchors.centerIn: parent
-            activeFocusOnTab: false
             selectByMouse: true
             echoMode: TextInput.Password
             placeholderText: ""
             font.family: inputContainer.fontFamily
+            font.pointSize: 15
             horizontalAlignment: TextInput.AlignLeft
             passwordCharacter: "*"
             passwordMaskDelay: 0
@@ -575,7 +581,6 @@ Column {
 
         SessionButton {
             id: sessionSelect
-            activeFocusOnTab: false
             implicitWidth: 389 //TODO: Relative scaling
             anchors.left: parent.left
             focus: false
@@ -849,7 +854,6 @@ Column {
 
         Button {
             id: loginButton
-            activeFocusOnTab: false
             anchors.left: parent.left
             anchors.leftMargin: -5 //TODO: Relative scaling
             anchors.verticalCenter: parent.verticalCenter

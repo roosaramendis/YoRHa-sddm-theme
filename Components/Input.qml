@@ -374,7 +374,7 @@ Column {
             anchors.centerIn: parent
             selectByMouse: true
             echoMode: TextInput.Password
-            placeholderText: ""
+            placeholderText: root.getTypewriterText("Password", passwordField.passwordCharIndex)
             font.family: inputContainer.fontFamily
             font.pointSize: 15
             horizontalAlignment: TextInput.AlignLeft
@@ -469,6 +469,16 @@ Column {
                     }
                 }
             ]
+        }
+
+        NumberAnimation {
+            id: passwordTypewriter
+            target: passwordField
+            property: "passwordCharIndex"
+            from: 0
+            to: 8
+            duration: 200
+            easing.type: Easing.Linear
         }
     }
 
@@ -757,6 +767,16 @@ Column {
                 }
             }
         ]
+
+        NumberAnimation {
+            id: sessionSelectTypewriter
+            target: sessionSelectContainer
+            property: "sessionSelectCharIndex"
+            from: 0
+            to: sessionSelect.currentSessionName.length
+            duration: 200
+            easing.type: Easing.Linear
+        }
     }
 
     // LOGIN BUTTON
@@ -972,6 +992,16 @@ Column {
                 loginDelayTimer.running ? loginDelayTimer.stop() && loginDelayTimer.start() : loginDelayTimer.start()
             }
         }
+
+        NumberAnimation {
+            id: loginTypewriter
+            target: login
+            property: "loginCharIndex"
+            from: 0
+            to: loginButton.text.length
+            duration: 200
+            easing.type: Easing.Linear
+        }
     }
 
     // ERROR FIELD
@@ -1130,7 +1160,7 @@ Column {
 
             ScriptAction {
                 script: {
-                    passwordTypewriterTimer.start()
+                    passwordTypewriter.start()
                 }
             }
         }
@@ -1181,7 +1211,7 @@ Column {
             }
             
             ScriptAction {
-                script: sessionSelectTypewriterTimer.start()
+                script: sessionSelectTypewriter.start()
             }
         }
 
@@ -1231,7 +1261,7 @@ Column {
             }
             
             ScriptAction {
-                script: loginTypewriterTimer.start()
+                script: loginTypewriter.start()
             }
         }
     }
@@ -1329,6 +1359,12 @@ Column {
                     to: 0
                     duration: 200
                 }
+
+                ScriptAction {
+                    script: {
+                        passwordField.passwordCharIndex = 0
+                    }
+                }
             }
         }
 
@@ -1420,6 +1456,12 @@ Column {
                     to: 0
                     duration: 200
                 }
+
+                ScriptAction {
+                    script: {
+                        login.loginCharIndex = 0
+                    }
+                }
             }
         }
     }
@@ -1447,60 +1489,6 @@ Column {
             // Stop once reached a reasonable max length
             if (usernameField.typewriterCharIndex > 2000) {
                 usernameTypewriterTimer.stop()
-            }
-        }
-    }
-
-    Timer {
-        id: passwordTypewriterTimer
-        interval: 20
-        running: false
-        repeat: true
-
-        onTriggered: {
-            passwordField.passwordCharIndex++
-            // Update the placeholder text directly
-            var placeholder = "Password"
-            password.placeholderText = inputContainer.formFunctions.getTypewriterText(placeholder, passwordField.passwordCharIndex);
-            
-            // Stop once reached a reasonable max length
-            if (passwordField.passwordCharIndex > 2000) {
-                passwordTypewriterTimer.stop()
-            }
-        }
-    }
-
-    Timer {
-        id: sessionSelectTypewriterTimer
-        interval: 20
-        running: false
-        repeat: true
-
-        onTriggered: {
-            sessionSelectContainer.sessionSelectCharIndex++
-            // Update the text directly
-            sessionText.text = inputContainer.formFunctions.getTypewriterText(sessionSelect.currentSessionName, sessionSelectContainer.sessionSelectCharIndex);
-            
-            // Stop once reached a reasonable max length
-            if (sessionSelectContainer.sessionSelectCharIndex > 2000) {
-                sessionSelectTypewriterTimer.stop()
-            }
-        }
-    }
-
-    Timer {
-        id: loginTypewriterTimer
-        interval: 20
-        running: false
-        repeat: true
-
-        onTriggered: {
-            login.loginCharIndex++
-            // The contentItem text already binds to login.loginCharIndex, so just incrementing it will update the display
-            
-            // Stop once reached a reasonable max length
-            if (login.loginCharIndex > 2000) {
-                loginTypewriterTimer.stop()
             }
         }
     }

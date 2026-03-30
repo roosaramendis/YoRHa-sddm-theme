@@ -3,3 +3,4 @@
 - [ ] Reimplement tab navigation
 - [x] Automatic active on login panel
 - [ ] Change README preview
+- [ ] Relink closing animation

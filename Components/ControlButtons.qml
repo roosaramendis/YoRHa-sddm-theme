@@ -134,7 +134,10 @@ ColumnLayout {
 
         Text {
             id: suspendText
-            text: root.getTypewriterText("Suspend", suspend.typewriterCharIndex)
+
+            property string textToDisplay: "Suspend"
+
+            text: root.getTypewriterText(textToDisplay, suspendButton.typewriterCharIndex)
             anchors.left: suspendSquare.right
             anchors.verticalCenter: suspend.verticalCenter
             anchors.leftMargin: 12
@@ -248,8 +251,8 @@ ColumnLayout {
             target: suspendButton
             property: "typewriterCharIndex"
             from: 0
-            to: suspendText.text.length
-            duration: 300
+            to: suspendText.textToDisplay.length
+            duration: 200
             easing.type: Easing.Linear
         }
     }
@@ -272,7 +275,7 @@ ColumnLayout {
             width: 30
             height: parent.height
             source: Qt.resolvedUrl("../Assets/vertical_bar.png")
-            opacity: 0.13 //0
+            opacity: 0 //0.13
         }
 
         // FOCUS POINTER
@@ -342,13 +345,16 @@ ColumnLayout {
             anchors.bottomMargin: 12
             width: height
             color: root.palette.text
-            opacity: 0.8
+            opacity: 0 //0.8
             z: 5
         }
 
         Text {
             id: hibernateText
-            text: root.getTypewriterText("Hibernate", hibernate.typewriterCharIndex)
+
+            property string textToDisplay: "Hibernate"
+
+            text: root.getTypewriterText(textToDisplay, hibernateButton.typewriterCharIndex)
             anchors.left: hibernateSquare.right
             anchors.verticalCenter: hibernate.verticalCenter
             anchors.leftMargin: 12
@@ -356,6 +362,7 @@ ColumnLayout {
             font.pointSize: 15
 
             color: root.palette.text
+            opacity: 0 //1
             
             z: 3
         }
@@ -462,8 +469,8 @@ ColumnLayout {
             target: hibernateButton
             property: "typewriterCharIndex"
             from: 0
-            to: hibernateText.text.length
-            duration: 300
+            to: hibernateText.textToDisplay.length
+            duration: 200
             easing.type: Easing.Linear
         }
     }
@@ -486,7 +493,7 @@ ColumnLayout {
             width: 30
             height: parent.height
             source: Qt.resolvedUrl("../Assets/vertical_bar.png")
-            opacity: 0.13 //0
+            opacity: 0 //0.13
         }
 
         // FOCUS POINTER
@@ -556,13 +563,16 @@ ColumnLayout {
             anchors.bottomMargin: 12
             width: height
             color: root.palette.text
-            opacity: 0.8
+            opacity: 0 //0.8
             z: 5
         }
 
         Text {
             id: rebootText
-            text: root.getTypewriterText("Reboot", reboot.typewriterCharIndex)
+
+            property string textToDisplay: "Reboot"
+
+            text: root.getTypewriterText(textToDisplay, rebootButton.typewriterCharIndex)
             anchors.left: rebootSquare.right
             anchors.verticalCenter: reboot.verticalCenter
             anchors.leftMargin: 12
@@ -570,6 +580,7 @@ ColumnLayout {
             font.pointSize: 15
 
             color: root.palette.text
+            opacity: 0 //1
             
             z: 3
         }
@@ -675,8 +686,8 @@ ColumnLayout {
             target: rebootButton
             property: "typewriterCharIndex"
             from: 0
-            to: rebootText.text.length
-            duration: 300
+            to: rebootText.textToDisplay.length
+            duration: 200
             easing.type: Easing.Linear
         }
     }
@@ -699,7 +710,7 @@ ColumnLayout {
             width: 30
             height: parent.height
             source: Qt.resolvedUrl("../Assets/vertical_bar.png")
-            opacity: 0.13 //0
+            opacity: 0 //0.13
         }
 
         // FOCUS POINTER
@@ -775,7 +786,10 @@ ColumnLayout {
 
         Text {
             id: shutdownText
-            text: root.getTypewriterText("Shutdown", shutdown.typewriterCharIndex)
+
+            property string textToDisplay: "Shutdown"
+
+            text: root.getTypewriterText(textToDisplay, shutdownButton.typewriterCharIndex)
             anchors.left: shutdownSquare.right
             anchors.verticalCenter: shutdown.verticalCenter
             anchors.leftMargin: 12
@@ -783,6 +797,7 @@ ColumnLayout {
             font.pointSize: 15
 
             color: root.palette.text
+            opacity: 0 //1
             
             z: 3
         }
@@ -888,8 +903,8 @@ ColumnLayout {
             target: shutdownButton
             property: "typewriterCharIndex"
             from: 0
-            to: shutdownText.text.length
-            duration: 300
+            to: shutdownText.textToDisplay.length
+            duration: 200
             easing.type: Easing.Linear
         }
     }
@@ -944,7 +959,10 @@ ColumnLayout {
             }
             
             ScriptAction {
-                script: suspendTypewriter.start()
+                script: {
+                    suspendText.opacity = 1
+                    suspendTypewriter.start()
+                }
             }
         }
 
@@ -996,6 +1014,7 @@ ColumnLayout {
 
             ScriptAction {
                 script: {
+                    hibernateText.opacity = 1
                     hibernateTypewriter.start()
                 }
             }
@@ -1030,7 +1049,7 @@ ColumnLayout {
                 }
 
                 NumberAnimation {
-                    target: rebootSelect.anchors
+                    target: reboot.anchors
                     property: "leftMargin"
                     from: -5 //TODO: Relative scaling
                     to: 55 //TODO: Relative scaling
@@ -1047,7 +1066,10 @@ ColumnLayout {
             }
             
             ScriptAction {
-                script: rebootTypewriter.start()
+                script: {
+                    rebootText.opacity = 1
+                    rebootTypewriter.start()
+                }
             }
         }
 
@@ -1083,7 +1105,7 @@ ColumnLayout {
                     target: shutdown.anchors
                     property: "leftMargin"
                     from: -5 //TODO: Relative scaling
-                     to: 55 //TODO: Relative scaling
+                    to: 55 //TODO: Relative scaling
                     duration: 200
                 }
 
@@ -1097,7 +1119,10 @@ ColumnLayout {
             }
             
             ScriptAction {
-                script: shutdownTypewriter.start()
+                script: {
+                    shutdownText.opacity = 1
+                    shutdownTypewriter.start()
+                }
             }
         }
     }
@@ -1140,6 +1165,14 @@ ColumnLayout {
                     to: 0
                     duration: 200
                 }
+
+                ScriptAction {
+                    script: {
+                        suspendText.opacity = 0
+                        suspendTypewriter.stop()
+                        suspendButton.typewriterCharIndex = 0
+                    }
+                }
             }
         }
 
@@ -1179,6 +1212,14 @@ ColumnLayout {
                     to: 0
                     duration: 200
                 }
+
+                ScriptAction {
+                    script: {
+                        hibernateText.opacity = 0
+                        hibernateTypewriter.stop()
+                        hibernateButton.typewriterCharIndex = 0
+                    }
+                }
             }
         }
 
@@ -1203,7 +1244,7 @@ ColumnLayout {
                 }
 
                 NumberAnimation {
-                    target: rebootSelect.anchors
+                    target: reboot.anchors
                     property: "leftMargin"
                     from: 55 //TODO: Relative scaling
                     to: -5 //TODO: Relative scaling
@@ -1217,6 +1258,14 @@ ColumnLayout {
                     to: 0
                     duration: 200
                 }
+
+                ScriptAction {
+                    script: {
+                        rebootText.opacity = 0
+                        rebootTypewriter.stop()
+                        rebootButton.typewriterCharIndex = 0
+                    }
+                }
             }
         }
 
@@ -1226,13 +1275,13 @@ ColumnLayout {
                 NumberAnimation {
                     target: shutdownSquare
                     property: "opacity"
-                    from: shutdown.opacityMultiplier
+                    from: 0.8
                     to: 0
                     duration: 200
                 }
 
                 NumberAnimation {
-                    target: shutdownButton
+                    target: shutdown
                     property: "opacity"
                     from: 1
                     to: 0
@@ -1240,10 +1289,10 @@ ColumnLayout {
                 }
 
                 NumberAnimation {
-                    target: shutdownButton.anchors
+                    target: shutdown.anchors
                     property: "leftMargin"
-                    from: 55 //TODO: Relative scaling
-                    to: -5 //TODO: Relative scaling
+                    from: 55
+                    to: -5
                     duration: 200
                 }
 
@@ -1253,6 +1302,14 @@ ColumnLayout {
                     from: 0.13
                     to: 0
                     duration: 200
+                }
+
+                ScriptAction {
+                    script: {
+                        shutdownText.opacity = 0
+                        shutdownTypewriter.stop()
+                        shutdownButton.typewriterCharIndex = 0
+                    }
                 }
             }
         }

@@ -42,6 +42,12 @@ Item {
 
     property bool active: false
 
+    SoundEffect {
+        id: focusSound
+        source: Qt.resolvedUrl("../Assets/sfx/focus.wav")
+        volume: 1
+    }
+
     FocusScope {
         id: panelButton
         anchors.fill: parent
@@ -57,6 +63,7 @@ Item {
             if (leftButton) {
                 leftButton.button.forceActiveFocus()
                 panelButtonWrapper.active = false
+                focusSound.play()
             }
         }
 
@@ -64,7 +71,18 @@ Item {
             if (rightButton) {
                 rightButton.button.forceActiveFocus()
                 panelButtonWrapper.active = false
+                focusSound.play()
             }
+        }
+
+        Keys.onDownPressed: {
+            KeyNavigation.down.forceActiveFocus()
+            focusSound.play()
+        }
+
+        Keys.onReturnPressed: {
+            KeyNavigation.down.forceActiveFocus()
+            focusSound.play()
         }
 
         // Background

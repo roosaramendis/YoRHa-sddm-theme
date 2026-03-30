@@ -29,6 +29,8 @@ Item {
     anchors.rightMargin: 63
 
     required property PanelButton controlPanelButton
+    required property Item modalBox
+    required property Item systemModal
 
     function getTypewriterText(fullText, charCount) {
         var chars = "abcdefghijklmnopqrstuvwxyz";
@@ -148,6 +150,8 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             
             controlPanelButton: controlPanelRoot.controlPanelButton
+            modalBox: controlPanelRoot.modalBox
+            systemModal: controlPanelRoot.systemModal
         }
     }
 }

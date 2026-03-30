@@ -143,10 +143,10 @@ Column {
         // USERNAME SQUARE
         Rectangle {
             id: usernameSquare
-            anchors.left: parent.left
+            anchors.left: username.left
             anchors.top: username.top
             anchors.bottom: username.bottom
-            anchors.leftMargin: 7 //TODO: Relative scaling
+            anchors.leftMargin: 12 //TODO: Relative scaling
             anchors.topMargin: 12 //TODO: Relative scaling
             anchors.bottomMargin: 12 //TODO: Relative scaling
             width: height
@@ -350,10 +350,10 @@ Column {
         // PASSWORD SQUARE
         Rectangle {
             id: passwordSquare
-            anchors.left: parent.left
+            anchors.left: password.left
             anchors.top: password.top
             anchors.bottom: password.bottom
-            anchors.leftMargin: 7 //TODO: Relative scaling
+            anchors.leftMargin: 12 //TODO: Relative scaling
             anchors.topMargin: 12 //TODO: Relative scaling
             anchors.bottomMargin: 12 //TODO: Relative scaling
             width: height
@@ -577,10 +577,10 @@ Column {
         // SESSION SQUARE
         Rectangle {
             id: sessionSquare
-            anchors.left: parent.left
+            anchors.left: sessionSelect.left
             anchors.top: sessionSelect.top
             anchors.bottom: sessionSelect.bottom
-            anchors.leftMargin: 7 //TODO: Relative scaling
+            anchors.leftMargin: 12 //TODO: Relative scaling
             anchors.topMargin: 12 //TODO: Relative scaling
             anchors.bottomMargin: 12 //TODO: Relative scaling
             width: height
@@ -860,15 +860,15 @@ Column {
         // LOGIN SQUARE
         Rectangle {
             id: loginSquare
-            anchors.left: parent.left
+            anchors.left: loginButton.left
             anchors.top: loginButton.top
             anchors.bottom: loginButton.bottom
-            anchors.leftMargin: -root.width
+            anchors.leftMargin: 12
             anchors.topMargin: 12 //TODO: Relative scaling
             anchors.bottomMargin: 12 //TODO: Relative scaling
             width: height
             color: root.palette.text
-            opacity: login.opacityMultiplier
+            opacity: 0
             z: 5
         }
 
@@ -1075,14 +1075,6 @@ Column {
                 }
 
                 NumberAnimation {
-                    target: usernameSquare.anchors
-                    property: "leftMargin"
-                    from: 7 //TODO: Relative scaling
-                    to: 67 //TODO: Relative scaling
-                    duration: 200
-                }
-
-                NumberAnimation {
                     target: username
                     property: "opacity"
                     from: 0
@@ -1122,14 +1114,6 @@ Column {
                     property: "opacity"
                     from: 0
                     to: 0.8
-                    duration: 200
-                }
-
-                NumberAnimation {
-                    target: passwordSquare.anchors
-                    property: "leftMargin"
-                    from: 7 //TODO: Relative scaling
-                    to: 67 //TODO: Relative scaling
                     duration: 200
                 }
 
@@ -1178,14 +1162,6 @@ Column {
                 }
 
                 NumberAnimation {
-                    target: sessionSquare.anchors
-                    property: "leftMargin"
-                    from: 7 //TODO: Relative scaling
-                    to: 67 //TODO: Relative scaling
-                    duration: 200
-                }
-
-                NumberAnimation {
                     target: sessionSelect
                     property: "opacity"
                     from: 0
@@ -1224,14 +1200,6 @@ Column {
                     property: "opacity"
                     from: 0
                     to: login.opacityMultiplier
-                    duration: 200
-                }
-
-                NumberAnimation {
-                    target: loginSquare.anchors
-                    property: "leftMargin"
-                    from: 7 //TODO: Relative scaling
-                    to: 67 //TODO: Relative scaling
                     duration: 200
                 }
 
@@ -1282,14 +1250,6 @@ Column {
                 }
 
                 NumberAnimation {
-                    target: usernameSquare.anchors
-                    property: "leftMargin"
-                    from: 67 //TODO: Relative scaling
-                    to: 7 //TODO: Relative scaling
-                    duration: 200
-                }
-
-                NumberAnimation {
                     target: username
                     property: "opacity"
                     from: 1
@@ -1325,14 +1285,6 @@ Column {
                     property: "opacity"
                     from: 0.8
                     to: 0
-                    duration: 200
-                }
-
-                NumberAnimation {
-                    target: passwordSquare.anchors
-                    property: "leftMargin"
-                    from: 67 //TODO: Relative scaling
-                    to: 7 //TODO: Relative scaling
                     duration: 200
                 }
 
@@ -1381,14 +1333,6 @@ Column {
                 }
 
                 NumberAnimation {
-                    target: sessionSquare.anchors
-                    property: "leftMargin"
-                    from: 67 //TODO: Relative scaling
-                    to: 7 //TODO: Relative scaling
-                    duration: 200
-                }
-
-                NumberAnimation {
                     target: sessionSelect
                     property: "opacity"
                     from: 1
@@ -1422,14 +1366,6 @@ Column {
                     property: "opacity"
                     from: login.opacityMultiplier
                     to: 0
-                    duration: 200
-                }
-
-                NumberAnimation {
-                    target: loginSquare.anchors
-                    property: "leftMargin"
-                    from: 67 //TODO: Relative scaling
-                    to: 7 //TODO: Relative scaling
                     duration: 200
                 }
 

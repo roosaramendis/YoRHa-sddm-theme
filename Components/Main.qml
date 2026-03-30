@@ -22,6 +22,7 @@ import QtQuick 2.11
 import QtQuick.Layouts 1.11
 import QtQuick.Controls 2.4
 import QtGraphicalEffects 1.0
+import QtMultimedia 5.11
 import "."
 
 Pane {
@@ -38,6 +39,16 @@ Pane {
     palette.button: "#33000000"
     palette.highlight: "#C9C3A3"
     palette.text: "#34332B"
+
+    SoundEffect {
+        id: modalOpen
+        source: Qt.resolvedUrl("../Assets/sfx/modal_open.wav")
+    }
+
+    SoundEffect {
+        id: modalClose
+        source: Qt.resolvedUrl("../Assets/sfx/modal_close.wav")
+    }
 
     FontLoader {
         id: rodinFont
@@ -458,6 +469,53 @@ Pane {
             id: uiContainer
             anchors.fill: parent
 
+            // Modal Box
+            Item {
+                id: modalBox
+                anchors.fill: parent
+
+                property var onConfirmCallback: function() {}
+                property var onCancelCallback: function() {}
+
+                Rectangle {
+                    anchors.fill: parent
+                    color: "#000000"
+                    opacity: 0.2
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {} // Block mouse events from passing through
+                }
+
+                Modal {
+                    id: systemModal
+                    anchors.centerIn: parent
+                }
+
+                Connections {
+                    target: systemModal
+                    function onConfirmed() {
+                        modalBox.onConfirmCallback()
+                    }
+                    function onCancelled() {
+                        modalBox.onCancelCallback()
+                    }
+                }
+                
+                onVisibleChanged: {
+                    if (modalBox.visible) {
+                        modalOpen.play()
+                    } else {
+                        modalClose.play()
+                    }
+                }
+
+                visible: false
+
+                z: 4
+            }
+
             // Panel seletion buttons
             Item {
                 id: panelButtonsContainer
@@ -771,6 +829,8 @@ Pane {
                 anchors.bottomMargin: 350
 
                 controlPanelButton: controlPanelButtonWrapper
+                modalBox: modalBox
+                systemModal: systemModal
 
                 visible: controlPanelButtonWrapper.active
             }
@@ -1461,7 +1521,6 @@ Pane {
             yScale: xScale
         }
     }
-
 
     // Timer to fire the various animations in order
     Timer {

@@ -31,6 +31,8 @@ ColumnLayout {
     spacing: 0
 
     required property PanelButton controlPanelButton
+    required property Item modalBox
+    required property Item systemModal
 
     function spawn() {
         spawnAnimationSequence.start()
@@ -204,7 +206,17 @@ ColumnLayout {
             }
 
             onClicked: {
-                sddm.suspend() //TODO: "Are you sure?" check box
+                systemModal.text = "Are you sure you want to suspend the system?"
+                modalBox.visible = true
+                systemModal.confirmButton.forceActiveFocus()
+
+                modalBox.onConfirmCallback = function() {
+                    sddm.suspend()
+                }
+                modalBox.onCancelCallback = function() {
+                    modalBox.visible = false
+                    suspend.forceActiveFocus()
+                }
             }
 
             KeyNavigation.up: controlPanelButton.button
@@ -422,7 +434,17 @@ ColumnLayout {
             }
 
             onClicked: {
-                sddm.hibernate() //TODO: "Are you sure?" check box
+                systemModal.text = "Hibernate the system?"
+                modalBox.visible = true
+                systemModal.confirmButton.forceActiveFocus()
+
+                modalBox.onConfirmCallback = function() {
+                    sddm.hibernate() //TODO: Prepone closing animation
+                }
+                modalBox.onCancelCallback = function() {
+                    modalBox.visible = false
+                    hibernate.forceActiveFocus()
+                }
             }
 
             KeyNavigation.up: suspend
@@ -639,7 +661,17 @@ ColumnLayout {
             }
 
             onClicked: {
-                sddm.reboot() //TODO: "Are you sure?" check box
+                systemModal.text = "Reboot the system?"
+                modalBox.visible = true
+                systemModal.confirmButton.forceActiveFocus()
+
+                modalBox.onConfirmCallback = function() {
+                    sddm.reboot() //TODO: Prepone closing animation
+                }
+                modalBox.onCancelCallback = function() {
+                    modalBox.visible = false
+                    reboot.forceActiveFocus()
+                }
             }
 
             KeyNavigation.up: hibernate
@@ -857,7 +889,17 @@ ColumnLayout {
             }
 
             onClicked: {
-                sddm.shutdown() //TODO: "Are you sure?" check box
+                systemModal.text = "Shutdown the system?"
+                modalBox.visible = true
+                systemModal.confirmButton.forceActiveFocus()
+
+                modalBox.onConfirmCallback = function() {
+                    sddm.shutdown() //TODO: Prepone closing animation
+                }
+                modalBox.onCancelCallback = function() {
+                    modalBox.visible = false
+                    shutdown.forceActiveFocus()
+                }
             }
 
             KeyNavigation.up: reboot

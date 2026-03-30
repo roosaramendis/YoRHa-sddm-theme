@@ -46,10 +46,12 @@ Item {
 
     function spawn() {
         header.spawn()
+        controlButtons.spawn()
     }
 
     function despawn() {
         header.despawn()
+        controlButtons.despawn()
     }
 
     // HEADER
@@ -130,20 +132,20 @@ Item {
         }
     }
 
-    // CONTROL BUTTONS + 
+    // CONTROL BUTTONS + LOG
     Item {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: header.bottom
         anchors.bottom: parent.bottom
+        height: 540
 
         anchors.topMargin: 20
 
         // Control Buttons
         ControlButtons {
             id: controlButtons
-            anchors.top: parent.top
-            anchors.topMargin: 50
+            anchors.verticalCenter: parent.verticalCenter
             
             controlPanelButton: controlPanelRoot.controlPanelButton
         }

@@ -137,14 +137,6 @@ Item {
                 invert: true
                 maskSource: Image {
                     id: buttonIcon
-                    
-                    anchors.left: parent.left
-                    anchors.top: parent.top
-                    anchors.bottom: parent.bottom
-
-                    anchors.leftMargin: 10
-                    anchors.topMargin: 10
-                    anchors.bottomMargin: 10
 
                     fillMode: Image.PreserveAspectFit
                     opacity: 0.5
@@ -173,8 +165,6 @@ Item {
             layer.enabled: true
             layer.effect: OpacityMask {
                 maskSource: Image {
-                    anchors.left: parent.left
-                    anchors.right: parent.right
                     fillMode: Image.PreserveAspectFit
                     source: Qt.resolvedUrl("../Assets/focus_pointer.png")
                 }

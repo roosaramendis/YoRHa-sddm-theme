@@ -65,6 +65,20 @@ Pane {
     signal trigDespawnTrigger()
     signal trigRespawnTrigger()
 
+    function getTypewriterText(fullText, charCount) {
+        var chars = "abcdefghijklmnopqrstuvwxyz";
+        var typed = fullText.substring(0, Math.min(charCount, fullText.length));
+
+        if (charCount < fullText.length ) {
+            if (fullText.charAt(typed.length) == fullText.charAt(typed.length).toUpperCase()) { // next character is uppercase, probably a new word, add a space for better readability
+                typed += chars.charAt(Math.floor(Math.random() * chars.length)).toUpperCase();
+            } else {
+                typed += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+        }
+        return typed;
+    }
+
     Item {
         id: sizeHelper
 

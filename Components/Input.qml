@@ -31,19 +31,19 @@ Column {
 
     SoundEffect {
         id: fieldFocusSound
-        source: Qt.resolvedUrl("../Assets/focus.wav")
+        source: Qt.resolvedUrl("../Assets/sfx/focus.wav")
         volume: 1
     }
 
     SoundEffect {
         id: popupOpenSound
-        source: Qt.resolvedUrl("../Assets/open.wav")
+        source: Qt.resolvedUrl("../Assets/sfx/open.wav")
         volume: 1
     }
 
     SoundEffect {
         id: popupCloseSound
-        source: Qt.resolvedUrl("../Assets/close.wav")
+        source: Qt.resolvedUrl("../Assets/sfx/close.wav")
         volume: 1
     }
 

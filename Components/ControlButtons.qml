@@ -34,6 +34,8 @@ ColumnLayout {
     required property Item modalBox
     required property Item systemModal
 
+    property int focusedButtonIndex: suspend.activeFocus ? 0 : hibernate.activeFocus ? 1 : reboot.activeFocus ? 2 : shutdown.activeFocus ? 3 : 4
+
     function spawn() {
         spawnAnimationSequence.start()
     }
@@ -206,9 +208,9 @@ ColumnLayout {
             }
 
             onClicked: {
-                systemModal.text = "Are you sure you want to suspend the system?"
+                systemModal.text = "Suspend the system?"
                 modalBox.visible = true
-                systemModal.confirmButton.forceActiveFocus()
+                systemModal.cancelButton.forceActiveFocus()
 
                 modalBox.onConfirmCallback = function() {
                     sddm.suspend()
@@ -220,8 +222,18 @@ ColumnLayout {
             }
 
             KeyNavigation.up: controlPanelButton.button
-            KeyNavigation.down: hibernate
+
             Keys.onReturnPressed: clicked()
+
+            Keys.onUpPressed: {
+                focusSound.play()
+                controlPanelButton.button.forceActiveFocus()
+            }
+
+            Keys.onDownPressed: {
+                focusSound.play()
+                hibernate.forceActiveFocus()
+            }
         }
 
         states: [
@@ -436,7 +448,7 @@ ColumnLayout {
             onClicked: {
                 systemModal.text = "Hibernate the system?"
                 modalBox.visible = true
-                systemModal.confirmButton.forceActiveFocus()
+                systemModal.cancelButton.forceActiveFocus()
 
                 modalBox.onConfirmCallback = function() {
                     sddm.hibernate() //TODO: Prepone closing animation
@@ -447,9 +459,17 @@ ColumnLayout {
                 }
             }
 
-            KeyNavigation.up: suspend
-            KeyNavigation.down: reboot
             Keys.onReturnPressed: clicked()
+
+            Keys.onUpPressed: {
+                focusSound.play()
+                suspend.forceActiveFocus()
+            }
+
+            Keys.onDownPressed: {
+                focusSound.play()
+                reboot.forceActiveFocus()
+            }
         }
 
         states: [
@@ -663,7 +683,7 @@ ColumnLayout {
             onClicked: {
                 systemModal.text = "Reboot the system?"
                 modalBox.visible = true
-                systemModal.confirmButton.forceActiveFocus()
+                systemModal.cancelButton.forceActiveFocus()
 
                 modalBox.onConfirmCallback = function() {
                     sddm.reboot() //TODO: Prepone closing animation
@@ -674,9 +694,16 @@ ColumnLayout {
                 }
             }
 
-            KeyNavigation.up: hibernate
-            KeyNavigation.down: shutdown
             Keys.onReturnPressed: clicked()
+
+            Keys.onUpPressed: {
+                focusSound.play()
+                hibernate.forceActiveFocus()
+            }
+            Keys.onDownPressed: {
+                focusSound.play()
+                shutdown.forceActiveFocus()
+            }
         }
 
         states: [
@@ -891,7 +918,7 @@ ColumnLayout {
             onClicked: {
                 systemModal.text = "Shutdown the system?"
                 modalBox.visible = true
-                systemModal.confirmButton.forceActiveFocus()
+                systemModal.cancelButton.forceActiveFocus()
 
                 modalBox.onConfirmCallback = function() {
                     sddm.shutdown() //TODO: Prepone closing animation
@@ -902,8 +929,12 @@ ColumnLayout {
                 }
             }
 
-            KeyNavigation.up: reboot
             Keys.onReturnPressed: clicked()
+
+            Keys.onUpPressed: {
+                focusSound.play()
+                reboot.forceActiveFocus()
+            }
         }
 
         states: [

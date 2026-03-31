@@ -20,6 +20,7 @@
 import QtQuick 2.11
 import QtQuick.Layouts 1.11
 import QtQuick.Controls 2.4
+import QtGraphicalEffects 1.12
 
 Item {
     id: controlPanelRoot
@@ -49,11 +50,13 @@ Item {
     function spawn() {
         header.spawn()
         controlButtons.spawn()
+        descriptionContainer.spawn()
     }
 
     function despawn() {
         header.despawn()
         controlButtons.despawn()
+        descriptionContainer.despawn()
     }
 
     // HEADER
@@ -134,7 +137,7 @@ Item {
         }
     }
 
-    // CONTROL BUTTONS + LOG
+    // CONTROL BUTTONS + DESCRIPTION
     Item {
         anchors.left: parent.left
         anchors.right: parent.right
@@ -152,6 +155,262 @@ Item {
             controlPanelButton: controlPanelRoot.controlPanelButton
             modalBox: controlPanelRoot.modalBox
             systemModal: controlPanelRoot.systemModal
+        }
+
+        // Description
+        Item {
+            id: descriptionContainer
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+            opacity: 0
+            width: 440 //TODO: Relative scaling
+            height: 540 //TODO: Relative scaling
+
+            property var typewriterCharIndex: 0
+
+            property var headerText: [ "Suspend", "Hibernate", "Reboot", "Shutdown", "---" ]
+            property int state: controlButtons.focusedButtonIndex
+            property var captionText: [
+                [ "Low Power Standby Protocol", "Core systems powered down.\nexternal interfaces secured.\nMinimal energy required.\nReady for brief reactivation." ],
+                [ "Deep System Hibernation Protocol", "All communication channels closed.\nMemory preserved.\nCore processing halted.\nReactivation requires full system boot sequence." ],
+                [ "System Reset Protocol", "All active processes terminated.\nMemory cleared.\nCore processing reinitialized." ],
+                [ "Emergency Power Down Protocol", "All systems forcibly powered off.\nMemory flushed.\nNo active processes." ],
+                [ "No Protocol", "No Protocol Selected.\nSelect a protocol to display details." ]
+            ]
+            property var icon: [ "suspend.svg", "hibernate.svg", "reboot.svg", "shutdown.svg", "" ]
+
+            function spawn() {
+                descriptionContainerFadeIn.start()
+                descriptionContainerSlideIn.start()
+                descriptionTypewriterBackward.stop()
+                descriptionTypewriterForward.start()
+            }
+
+            function despawn() {
+                descriptionTypewriterForward.stop()
+                descriptionTypewriterBackward.start()
+            }
+
+            onStateChanged: {
+                descriptionTypewriterForward.stop()
+                descriptionTypewriterBackward.stop()
+                descriptionContainer.typewriterCharIndex = 0
+                descriptionTypewriterForward.start()
+            }
+
+            Rectangle {
+                id: descriptionBackground
+                anchors.fill: parent
+                color: "#D5CFAF"
+
+                layer.enabled: true
+                layer.effect: DropShadow {
+                    transparentBorder: true
+                    horizontalOffset: 4 //TODO: Relative scaling
+                    verticalOffset: 4 //TODO: Relative scaling
+                    radius: 0
+                    samples: 17
+                    color: "#45000000"
+                }
+            }
+
+            Item {
+                anchors.fill: parent
+                
+                Rectangle {
+                    id: descriptionHeader
+
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    height: 47
+
+                    color: "#B2000000"
+
+                    Text {
+                        anchors.left: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
+
+                        anchors.leftMargin: 30
+                        text: root.getTypewriterText(descriptionContainer.headerText[descriptionContainer.state], descriptionContainer.typewriterCharIndex)
+                        font.family: root.fontFamily
+                        font.pointSize: 15
+                        color: "#D5CFAF"
+                    }
+                }
+
+                Rectangle {
+                    id: descriptionIcon
+
+                    anchors.top: descriptionHeader.bottom
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+
+                    anchors.topMargin: 20
+                    anchors.leftMargin: 30
+                    anchors.rightMargin: 30
+
+                    height: 200
+
+                    color: "#AFA98F"
+
+                    Rectangle {
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        anchors.horizontalCenter: parent.horizontalCenter
+
+                        anchors.topMargin: 20
+                        anchors.bottomMargin: 20
+
+                        width: parent.height - 40
+                        height: parent.height - 40
+
+                        color: "#464646"
+
+                        layer.enabled: true
+                        layer.effect: OpacityMask {
+                            maskSource: Image {
+                                anchors.fill: parent
+                                source: Qt.resolvedUrl("../Assets/" + descriptionContainer.icon[descriptionContainer.state])
+                                fillMode: Image.PreserveAspectFit
+                            }
+                        }
+                    }
+                }
+
+                Text {
+                    id: descriptionProtocol
+                    anchors.top: descriptionIcon.bottom
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+
+                    anchors.topMargin: 20
+                    anchors.leftMargin: 30
+                    anchors.rightMargin: 30
+
+                    text: root.getTypewriterText(descriptionContainer.captionText[descriptionContainer.state][0], descriptionContainer.typewriterCharIndex)
+                    font.family: root.fontFamily
+                    font.pointSize: 13
+
+                    color: "#34332B"
+                    opacity: 0.8
+                }
+
+                // Spacer
+                Rectangle {
+                    id: descriptionSpacer
+
+                    anchors.top: descriptionProtocol.bottom
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+
+                    anchors.topMargin: 20
+                    anchors.leftMargin: 30
+                    anchors.rightMargin: 30
+
+                    height: 2
+
+                    color: "#AFA98F"
+                }
+
+                Text {
+                    anchors.top: descriptionSpacer.bottom
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+
+                    anchors.topMargin: 20
+                    anchors.leftMargin: 30
+                    anchors.rightMargin: 30
+
+                    text: root.getTypewriterText(descriptionContainer.captionText[descriptionContainer.state][1], descriptionContainer.typewriterCharIndex)
+                    wrapMode: Text.WordWrap
+                    font.family: root.fontFamily
+                    font.pointSize: 13
+
+                    color: "#34332B"
+                    opacity: 0.8
+                }
+            }
+
+            NumberAnimation {
+                id: descriptionContainerFadeIn
+                target: descriptionContainer
+                property: "opacity"
+                from: 0
+                to: 1
+                duration: 600
+                easing.type: Easing.OutCubic
+            }
+
+            NumberAnimation {
+                id: descriptionContainerSlideIn
+                target: descriptionContainer.anchors
+                property: "rightMargin"
+                from: -60 //TODO: Relative scaling
+                to: 0
+                duration: 600
+                easing.type: Easing.OutCubic
+            }
+
+            NumberAnimation {
+                id: descriptionContainerFadeOut
+                target: descriptionContainer
+                property: "opacity"
+                from: 1
+                to: 0
+                duration: 600
+                easing.type: Easing.OutCubic
+            }
+
+            NumberAnimation {
+                id: descriptionContainerSlideOut
+                target: descriptionContainer.anchors
+                property: "rightMargin"
+                from: 0
+                to: -60 //TODO: Relative scaling
+                duration: 600
+                easing.type: Easing.OutCubic
+            }
+
+            NumberAnimation {
+                id: descriptionTypewriterForward
+                target: descriptionContainer
+                property: "typewriterCharIndex"
+                from: 0
+                to: 122
+                duration: 300
+                easing.type: Easing.Linear
+            }
+
+            NumberAnimation {
+                id: descriptionTypewriterBackward
+                target: descriptionContainer
+                property: "typewriterCharIndex"
+                to: 0
+                duration: 300
+                easing.type: Easing.Linear
+            }
+
+            Connections {
+                target: descriptionTypewriterForward
+
+                function onStarted() {
+                    // Ensure fully visible text at the end of the animation
+                    descriptionContainer.headerText.opacity = 1
+                    descriptionContainer.captionText.opacity = 1
+                }
+            }
+
+            Connections {
+                target: descriptionTypewriterBackward
+
+                function onStopped() {
+                    descriptionContainer.headerText.opacity = 0
+                    descriptionContainer.captionText.opacity = 0
+                    descriptionContainerFadeOut.start()
+                    descriptionContainerSlideOut.start()
+                }
+            }
         }
     }
 }

@@ -3,4 +3,7 @@
 - [ ] Reimplement tab navigation
 - [x] Automatic active on login panel
 - [ ] Change README preview
-- [ ] Relink closing animation
+- [x] Relink closing animation
+- [ ] Fix Login Panel typewriter effect
+- [ ] Control Panel is slightly higher than Login Panel
+- [ ] Abstract the button

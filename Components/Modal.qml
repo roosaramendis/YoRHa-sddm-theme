@@ -35,6 +35,7 @@ Item {
     signal cancelled()
 
     property alias confirmButton: confirmButton
+    property alias cancelButton: cancelButton
     property alias text: messageText.text
 
     SoundEffect {
@@ -93,7 +94,7 @@ Item {
     // MESSAGE
     Text {
         id: messageText
-        
+
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
@@ -278,6 +279,10 @@ Item {
                 confirmButton.clicked()
             }
 
+            Keys.onEscapePressed: {
+                cancelButton.clicked()
+            }
+
             onClicked: {
                 confirmed()
             }
@@ -415,6 +420,10 @@ Item {
             Keys.onLeftPressed: {
                 focusSound.play()
                 confirmButton.forceActiveFocus()
+            }
+
+            Keys.onEscapePressed: {
+                cancelButton.clicked()
             }
 
             Keys.onReturnPressed: {

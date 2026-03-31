@@ -222,9 +222,9 @@ Item {
                         anchors.left: parent.left
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.leftMargin: 30 //TODO: Relative scaling
-                        text: formContainer.getTypewriterText(logoHeader.text, avatarContainer.typewriterCharIndex)
+                        text: root.getTypewriterText(logoHeader.text, avatarContainer.typewriterCharIndex)
                         font.family: root.fontFamily
-                        font.pointSize: sizeHelper.height / 67
+                        font.pointSize: 15
                         color: "#D5CFAF"
                         opacity: 0.9
                     }

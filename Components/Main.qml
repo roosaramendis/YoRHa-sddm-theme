@@ -50,6 +50,11 @@ Pane {
         source: Qt.resolvedUrl("../Assets/sfx/modal_close.wav")
     }
 
+    SoundEffect {
+        id: focusSound
+        source: Qt.resolvedUrl("../Assets/sfx/focus.wav")
+    }
+
     FontLoader {
         id: rodinFont
         source: Qt.resolvedUrl("../fonts/Rodin-Pro-M.otf")
@@ -80,7 +85,7 @@ Pane {
         var chars = "abcdefghijklmnopqrstuvwxyz";
         var typed = fullText.substring(0, Math.min(charCount, fullText.length));
 
-        if (charCount < fullText.length ) {
+        if (charCount < fullText.length && charCount > 0) {
             if (fullText.charAt(typed.length) == fullText.charAt(typed.length).toUpperCase()) { // next character is uppercase, probably a new word, add a space for better readability
                 typed += chars.charAt(Math.floor(Math.random() * chars.length)).toUpperCase();
             } else {
@@ -513,7 +518,7 @@ Pane {
 
                 visible: false
 
-                z: 4
+                z: 9900
             }
 
             // Panel seletion buttons
@@ -802,7 +807,7 @@ Pane {
                     }
                 }
 
-                z: 9998
+                z: 4
             }
 
             LoginPanel {

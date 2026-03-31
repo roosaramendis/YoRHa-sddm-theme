@@ -768,14 +768,24 @@ Column {
             }
         ]
 
-        NumberAnimation {
+        SequentialAnimation {
             id: sessionSelectTypewriter
-            target: sessionSelectContainer
-            property: "sessionSelectCharIndex"
-            from: 0
-            to: sessionSelect.currentSessionName.length
-            duration: 200
-            easing.type: Easing.Linear
+
+            NumberAnimation {
+                target: sessionSelectContainer
+                property: "sessionSelectCharIndex"
+                from: 0
+                to: sessionSelect.currentSessionName.length
+                duration: 200
+                easing.type: Easing.Linear
+            }
+
+            NumberAnimation {
+                target: sessionSelectContainer
+                property: "sessionSelectCharIndex"
+                from: sessionSelect.currentSessionName.length
+                to: 200 // Arbitrary large number to ensure it doesn't stop prematurely if the session name changes
+            }
         }
     }
 

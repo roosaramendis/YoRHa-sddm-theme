@@ -270,7 +270,7 @@ Item {
                         layer.effect: OpacityMask {
                             maskSource: Image {
                                 anchors.fill: parent
-                                source: Qt.resolvedUrl("../Assets/" + descriptionContainer.icon[descriptionContainer.state])
+                                source: Qt.resolvedUrl("../Assets/Icons/" + descriptionContainer.icon[descriptionContainer.state])
                                 fillMode: Image.PreserveAspectFit
                             }
                         }

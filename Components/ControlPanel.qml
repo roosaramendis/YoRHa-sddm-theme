@@ -62,7 +62,6 @@ Item {
     // HEADER
     Item {
         id: header
-        opacity: 1
         anchors.left: parent.left
         anchors.right: parent.right
         height: 60
@@ -142,7 +141,6 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: header.bottom
-        anchors.bottom: parent.bottom
         height: 540
 
         anchors.topMargin: 20
@@ -150,7 +148,8 @@ Item {
         // Control Buttons
         ControlButtons {
             id: controlButtons
-            anchors.verticalCenter: parent.verticalCenter
+            anchors.top: parent.top
+            anchors.topMargin: 150
             
             controlPanelButton: controlPanelRoot.controlPanelButton
             modalBox: controlPanelRoot.modalBox
@@ -290,7 +289,7 @@ Item {
 
                     text: root.getTypewriterText(descriptionContainer.captionText[descriptionContainer.state][0], descriptionContainer.typewriterCharIndex)
                     font.family: root.fontFamily
-                    font.pointSize: 13
+                    font.pointSize: 15
 
                     color: "#34332B"
                     opacity: 0.8

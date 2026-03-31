@@ -38,8 +38,6 @@ Item {
 
     required property PanelButton loginPanelButton
 
-    property string fontFamily: rodinFont.name || "Arial"
-
     function getTypewriterText(fullText, charCount) {
         var chars = "abcdefghijklmnopqrstuvwxyz";
         var typed = fullText.substring(0, Math.min(charCount, fullText.length));
@@ -69,7 +67,6 @@ Item {
     // HEADER - Simple text with HeaderText aligned to the left
     Item {
         id: header
-        opacity: 1
         anchors.left: parent.left
         anchors.right: parent.right
         height: 60
@@ -151,11 +148,13 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
         height: 540 //TODO: Relative scaling
+        anchors.topMargin: 20
 
         // INPUT - Input fields aligned to the left
         Input {
             id: input
-            anchors.verticalCenter: parent.verticalCenter
+            anchors.top: parent.top
+            anchors.topMargin: 150
             fontFamily: root.fontFamily
 
             loginPanelButton: formContainer.loginPanelButton

@@ -31,7 +31,7 @@
 
 ## Tabs
 - [x] Main login
-- [ ] System Control (shutdown/hibernate/suspend/reboot)
+- [x] System Control (shutdown/hibernate/suspend/reboot)
 - [ ] System Info
 - [ ] System Log/Quests
 - [ ] idk

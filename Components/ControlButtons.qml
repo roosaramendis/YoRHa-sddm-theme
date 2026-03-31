@@ -52,159 +52,21 @@ ColumnLayout {
         property real opacityMultiplier: suspend[2] ? 1 : 0.6
 
         height: 75
-        width: 500
-
-        // VERTICAL BAR
-        Image {
-            id: suspendVerticalBar
-            anchors.right: parent.left
-            anchors.rightMargin: -21
-            width: 30
-            height: parent.height
-            source: Qt.resolvedUrl("../Assets/vertical_bar.png")
-            opacity: 0 // 0.13
-        }
-
-        // FOCUS POINTER
-        Image {
-            id: suspendFocusPointer
-            anchors.right: suspend.left
-            anchors.rightMargin: 10 //TODO: Relative scaling
-            anchors.verticalCenter: suspendButton.verticalCenter
-            width: 40 //TODO: Relative scaling
-            height: 27 //TODO: Relative scaling
-            source: Qt.resolvedUrl("../Assets/focus_pointer.png")
-            opacity: suspend.activeFocus ? 0.63 : 0
-            visible: opacity > 0
-
-            Behavior on opacity {
-                NumberAnimation {
-                    duration: 200
-                }
-            }
-        }
-
-        // SIDEBARS
-        Rectangle {
-            id: suspendUpwardsSidebar
-            width: 389 //TODO: Relative scaling
-            height: 2 //TODO: Relative scaling
-            anchors.bottom: suspend.top
-            anchors.bottomMargin: -2
-            anchors.horizontalCenter: suspend.horizontalCenter
-            color: "#000000"
-            opacity: 0
-
-            Behavior on anchors.bottomMargin {
-                NumberAnimation {
-                    duration: 100
-                    easing.type: Easing.InOutQuad
-                }
-            }
-        }
-        
-        Rectangle {
-            id: suspendDownwardsSidebar
-            width: 389 //TODO: Relative scaling
-            height: 2 //TODO: Relative scaling
-            anchors.top: suspend.bottom
-            anchors.topMargin: -2
-            anchors.horizontalCenter: suspend.horizontalCenter
-            color: "#000000"
-            opacity: 0
-
-            Behavior on anchors.topMargin {
-                NumberAnimation {
-                    duration: 100
-                    easing.type: Easing.InOutQuad
-                }
-            }
-        }
-
-        // SQUARE
-        Rectangle {
-            id: suspendSquare
-            anchors.left: suspend.left
-            anchors.top: suspend.top
-            anchors.bottom: suspend.bottom
-            anchors.leftMargin: 12
-            anchors.topMargin: 12
-            anchors.bottomMargin: 12
-            width: height
-            color: root.palette.text
-            opacity: 0 //0.8
-            z: 5
-        }
-
-        Text {
-            id: suspendText
-
-            property string textToDisplay: "Suspend"
-
-            text: root.getTypewriterText(textToDisplay, suspendButton.typewriterCharIndex)
-            anchors.left: suspendSquare.right
-            anchors.verticalCenter: suspend.verticalCenter
-            anchors.leftMargin: 12
-            font.family: root.fontFamily
-            font.pointSize: 15
-
-            color: root.palette.text
-            opacity: 0 //1
-
-            z: 3
-        }
+        width: 453
 
         // BUTTON
         Button {
             id: suspend
 
+            width: parent.width
+            height: parent.height
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
-            anchors.leftMargin: 55 //TODO: Relative scaling
-            height: 48
-            width: 389
 
-            background: Item {
-                Rectangle {
-                    id: suspendBackground
-                    anchors.fill: parent
-                    color: root.palette.button
-                    opacity: 0
-                }
-
-                Rectangle {
-                    id: suspendDarkener
-                    anchors.left: parent.left
-                    height: parent.height
-                    width: 0
-                    color: "#000000"
-                    opacity: 0
-
-                    Behavior on opacity {
-                        NumberAnimation {
-                            duration: 100
-                            easing.type: Easing.InOutQuad
-                        }
-                    }
-
-                    Behavior on width {
-                        enabled: !suspendDarkener.width > 0 // Fire animation only when expanding, not collapsing
-                        NumberAnimation {
-                            duration: 500
-                            easing.type: Easing.OutExpo
-                        }
-                    }
-                }
-
-                layer.enabled: false
-                layer.effect: DropShadow {
-                    transparentBorder: true
-                    horizontalOffset: 4
-                    verticalOffset: 4
-                    radius: 0
-                    samples: 17
-                    color: "#45000000"
-                }
+            background: ButtonBackground {
+                id: suspendBackground
+                focused: suspend.activeFocus
+                textToDisplay: "Suspend"
             }
 
             onClicked: {
@@ -213,7 +75,10 @@ ColumnLayout {
                 systemModal.cancelButton.forceActiveFocus()
 
                 modalBox.onConfirmCallback = function() {
-                    sddm.suspend()
+                    modalBox.visible = false
+                    closingAnimationDirector.start()
+                    systemDelayTimer.callback = sddm.suspend()
+                    systemDelayTimer.running ? systemDelayTimer.stop() && systemDelayTimer.start() : systemDelayTimer.start()
                 }
                 modalBox.onCancelCallback = function() {
                     modalBox.visible = false
@@ -235,50 +100,6 @@ ColumnLayout {
                 hibernate.forceActiveFocus()
             }
         }
-
-        states: [
-            State {
-                name: "focused"
-                when: suspend.activeFocus
-                PropertyChanges { // Change text color
-                    target: suspendText
-                    color: root.palette.highlight
-                }
-                PropertyChanges { // Darken the background
-                    target: suspendDarkener
-                    opacity: 0.5
-                    width: parent.width
-                }
-                PropertyChanges { // Add shadow to the background
-                    target: suspend.background
-                    layer.enabled: true
-                }
-                PropertyChanges { // Pop out the sidebars
-                    target: suspendUpwardsSidebar
-                    anchors.bottomMargin: 4 //TODO: Relative scaling
-                    opacity: 0.63
-                }
-                PropertyChanges { // Pop out the sidebars
-                    target: suspendDownwardsSidebar
-                    anchors.topMargin: 4 //TODO: Relative scaling
-                    opacity: 0.63
-                }
-                PropertyChanges { // Highlight square
-                    target: suspendSquare
-                    color: root.palette.highlight
-                }
-            }
-        ]
-
-        NumberAnimation {
-            id: suspendTypewriter
-            target: suspendButton
-            property: "typewriterCharIndex"
-            from: 0
-            to: suspendText.textToDisplay.length
-            duration: 200
-            easing.type: Easing.Linear
-        }
     }
 
     // Hibernate Button
@@ -289,160 +110,21 @@ ColumnLayout {
         property real opacityMultiplier: hibernate[2] ? 1 : 0.6
 
         height: 75
-        width: 500
-
-        // VERTICAL BAR
-        Image {
-            id: hibernateVerticalBar
-            anchors.right: parent.left
-            anchors.rightMargin: -21
-            width: 30
-            height: parent.height
-            source: Qt.resolvedUrl("../Assets/vertical_bar.png")
-            opacity: 0 //0.13
-        }
-
-        // FOCUS POINTER
-        Image {
-            id: hibernateFocusPointer
-            anchors.right: hibernate.left
-            anchors.rightMargin: 10 //TODO: Relative scaling
-            anchors.verticalCenter: hibernateButton.verticalCenter
-            width: 40 //TODO: Relative scaling
-            height: 27 //TODO: Relative scaling
-            source: Qt.resolvedUrl("../Assets/focus_pointer.png")
-            opacity: hibernate.activeFocus ? 0.63 : 0
-            visible: opacity > 0
-
-            Behavior on opacity {
-                NumberAnimation {
-                    duration: 200
-                }
-            }
-        }
-
-        // SIDEBARS
-        Rectangle {
-            id: hibernateUpwardsSidebar
-            width: 389 //TODO: Relative scaling
-            height: 2 //TODO: Relative scaling
-            anchors.bottom: hibernate.top
-            anchors.bottomMargin: -2
-            anchors.horizontalCenter: hibernate.horizontalCenter
-            color: "#000000"
-            opacity: 0
-
-            Behavior on anchors.bottomMargin {
-                NumberAnimation {
-                    duration: 100
-                    easing.type: Easing.InOutQuad
-                }
-            }
-        }
-        
-        Rectangle {
-            id: hibernateDownwardsSidebar
-            width: 389 //TODO: Relative scaling
-            height: 2 //TODO: Relative scaling
-            anchors.top: hibernate.bottom
-            anchors.topMargin: -2
-            anchors.horizontalCenter: hibernate.horizontalCenter
-            color: "#000000"
-            opacity: 0
-
-            Behavior on anchors.topMargin {
-                NumberAnimation {
-                    duration: 100
-                    easing.type: Easing.InOutQuad
-                }
-            }
-        }
-
-        // SQUARE
-        Rectangle {
-            id: hibernateSquare
-            anchors.left: hibernate.left
-            anchors.top: hibernate.top
-            anchors.bottom: hibernate.bottom
-            anchors.leftMargin: 12
-            anchors.topMargin: 12
-            anchors.bottomMargin: 12
-            width: height
-            color: root.palette.text
-            opacity: 0 //0.8
-            z: 5
-        }
-
-        Text {
-            id: hibernateText
-
-            property string textToDisplay: "Hibernate"
-
-            text: root.getTypewriterText(textToDisplay, hibernateButton.typewriterCharIndex)
-            anchors.left: hibernateSquare.right
-            anchors.verticalCenter: hibernate.verticalCenter
-            anchors.leftMargin: 12
-            font.family: root.fontFamily
-            font.pointSize: 15
-
-            color: root.palette.text
-            opacity: 0 //1
-            
-            z: 3
-        }
+        width: 453
 
         // BUTTON
         Button {
             id: hibernate
 
+            width: parent.width
+            height: parent.height
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
-            anchors.leftMargin: 55 //TODO: Relative scaling
-            height: 48
-            width: 389
 
-            background: Item {
-                Rectangle {
-                    id: hibernateBackground
-                    anchors.fill: parent
-                    color: root.palette.button
-
-                    opacity: 0
-                }
-
-                Rectangle {
-                    id: hibernateDarkener
-                    anchors.left: parent.left
-                    height: parent.height
-                    width: 0
-                    color: "#000000"
-                    opacity: 0
-
-                    Behavior on opacity {
-                        NumberAnimation {
-                            duration: 100
-                            easing.type: Easing.InOutQuad
-                        }
-                    }
-
-                    Behavior on width {
-                        enabled: !hibernateDarkener.width > 0 // Fire animation only when expanding, not collapsing
-                        NumberAnimation {
-                            duration: 500
-                            easing.type: Easing.OutExpo
-                        }
-                    }
-                }
-
-                layer.enabled: false
-                layer.effect: DropShadow {
-                    transparentBorder: true
-                    horizontalOffset: 4
-                    verticalOffset: 4
-                    radius: 0
-                    samples: 17
-                    color: "#45000000"
-                }
+            background: ButtonBackground {
+                id: hibernateBackground
+                focused: hibernate.activeFocus
+                textToDisplay: "Hibernate"
             }
 
             onClicked: {
@@ -451,7 +133,10 @@ ColumnLayout {
                 systemModal.cancelButton.forceActiveFocus()
 
                 modalBox.onConfirmCallback = function() {
-                    sddm.hibernate() //TODO: Prepone closing animation
+                    modalBox.visible = false
+                    closingAnimationDirector.start()
+                    systemDelayTimer.callback = sddm.hibernate()
+                    systemDelayTimer.running ? systemDelayTimer.stop() && systemDelayTimer.start() : systemDelayTimer.start()
                 }
                 modalBox.onCancelCallback = function() {
                     modalBox.visible = false
@@ -471,213 +156,29 @@ ColumnLayout {
                 reboot.forceActiveFocus()
             }
         }
-
-        states: [
-            State {
-                name: "focused"
-                when: hibernate.activeFocus
-                PropertyChanges { // Change text color
-                    target: hibernateText
-                    color: root.palette.highlight
-                }
-                PropertyChanges { // Darken the background
-                    target: hibernateDarkener
-                    opacity: 0.5
-                    width: parent.width
-                }
-                PropertyChanges { // Add shadow to the background
-                    target: hibernate.background
-                    layer.enabled: true
-                }
-                PropertyChanges { // Pop out the sidebars
-                    target: hibernateUpwardsSidebar
-                    anchors.bottomMargin: 4 //TODO: Relative scaling
-                    opacity: 0.63
-                }
-                PropertyChanges { // Pop out the sidebars
-                    target: hibernateDownwardsSidebar
-                    anchors.topMargin: 4 //TODO: Relative scaling
-                    opacity: 0.63
-                }
-                PropertyChanges { // Highlight square
-                    target: hibernateSquare
-                    color: root.palette.highlight
-                }
-            }
-        ]
-
-        NumberAnimation {
-            id: hibernateTypewriter
-            target: hibernateButton
-            property: "typewriterCharIndex"
-            from: 0
-            to: hibernateText.textToDisplay.length
-            duration: 200
-            easing.type: Easing.Linear
-        }
     }
 
     // Reboot Button
     Item {
         id: rebootButton
 
-        property int typewriterCharIndex: 0
         property real opacityMultiplier: reboot[2] ? 1 : 0.6
 
         height: 75
-        width: 500
-
-        // VERTICAL BAR
-        Image {
-            id: rebootVerticalBar
-            anchors.right: parent.left
-            anchors.rightMargin: -21
-            width: 30
-            height: parent.height
-            source: Qt.resolvedUrl("../Assets/vertical_bar.png")
-            opacity: 0 //0.13
-        }
-
-        // FOCUS POINTER
-        Image {
-            id: rebootFocusPointer
-            anchors.right: reboot.left
-            anchors.rightMargin: 10 //TODO: Relative scaling
-            anchors.verticalCenter: rebootButton.verticalCenter
-            width: 40 //TODO: Relative scaling
-            height: 27 //TODO: Relative scaling
-            source: Qt.resolvedUrl("../Assets/focus_pointer.png")
-            opacity: reboot.activeFocus ? 0.63 : 0
-            visible: opacity > 0
-
-            Behavior on opacity {
-                NumberAnimation {
-                    duration: 200
-                }
-            }
-        }
-
-        // SIDEBARS
-        Rectangle {
-            id: rebootUpwardsSidebar
-            width: 389 //TODO: Relative scaling
-            height: 2 //TODO: Relative scaling
-            anchors.bottom: reboot.top
-            anchors.bottomMargin: -2
-            anchors.horizontalCenter: reboot.horizontalCenter
-            color: "#000000"
-            opacity: 0
-
-            Behavior on anchors.bottomMargin {
-                NumberAnimation {
-                    duration: 100
-                    easing.type: Easing.InOutQuad
-                }
-            }
-        }
-        
-        Rectangle {
-            id: rebootDownwardsSidebar
-            width: 389 //TODO: Relative scaling
-            height: 2 //TODO: Relative scaling
-            anchors.top: reboot.bottom
-            anchors.topMargin: -2
-            anchors.horizontalCenter: reboot.horizontalCenter
-            color: "#000000"
-            opacity: 0
-
-            Behavior on anchors.topMargin {
-                NumberAnimation {
-                    duration: 100
-                    easing.type: Easing.InOutQuad
-                }
-            }
-        }
-
-        // SQUARE
-        Rectangle {
-            id: rebootSquare
-            anchors.left: reboot.left
-            anchors.top: reboot.top
-            anchors.bottom: reboot.bottom
-            anchors.leftMargin: 12
-            anchors.topMargin: 12
-            anchors.bottomMargin: 12
-            width: height
-            color: root.palette.text
-            opacity: 0 //0.8
-            z: 5
-        }
-
-        Text {
-            id: rebootText
-
-            property string textToDisplay: "Reboot"
-
-            text: root.getTypewriterText(textToDisplay, rebootButton.typewriterCharIndex)
-            anchors.left: rebootSquare.right
-            anchors.verticalCenter: reboot.verticalCenter
-            anchors.leftMargin: 12
-            font.family: root.fontFamily
-            font.pointSize: 15
-
-            color: root.palette.text
-            opacity: 0 //1
-            
-            z: 3
-        }
+        width: 453
 
         Button {
             id: reboot
 
+            width: parent.width
+            height: parent.height
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
-            anchors.leftMargin: 55 //TODO: Relative scaling
-            height: 48
-            width: 389
 
-            background: Item {
-                Rectangle {
-                    id: rebootBackground
-                    anchors.fill: parent
-                    color: root.palette.button
-
-                    opacity: 0
-                }
-
-                Rectangle {
-                    id: rebootDarkener
-                    anchors.left: parent.left
-                    height: parent.height
-                    width: 0
-                    color: "#000000"
-                    opacity: 0
-
-                    Behavior on opacity {
-                        NumberAnimation {
-                            duration: 100
-                            easing.type: Easing.InOutQuad
-                        }
-                    }
-
-                    Behavior on width {
-                        enabled: !rebootDarkener.width > 0 // Fire animation only when expanding, not collapsing
-                        NumberAnimation {
-                            duration: 500
-                            easing.type: Easing.OutExpo
-                        }
-                    }
-                }
-
-                layer.enabled: false
-                layer.effect: DropShadow {
-                    transparentBorder: true
-                    horizontalOffset: 4
-                    verticalOffset: 4
-                    radius: 0
-                    samples: 17
-                    color: "#45000000"
-                }
+            background: ButtonBackground {
+                id: rebootBackground
+                focused: reboot.activeFocus
+                textToDisplay: "Reboot"
             }
 
             onClicked: {
@@ -686,7 +187,10 @@ ColumnLayout {
                 systemModal.cancelButton.forceActiveFocus()
 
                 modalBox.onConfirmCallback = function() {
-                    sddm.reboot() //TODO: Prepone closing animation
+                    modalBox.visible = false
+                    closingAnimationDirector.start()
+                    systemDelayTimer.callback = sddm.reboot()
+                    systemDelayTimer.running ? systemDelayTimer.stop() && systemDelayTimer.start() : systemDelayTimer.start()
                 }
                 modalBox.onCancelCallback = function() {
                     modalBox.visible = false
@@ -705,50 +209,6 @@ ColumnLayout {
                 shutdown.forceActiveFocus()
             }
         }
-
-        states: [
-            State {
-                name: "focused"
-                when: reboot.activeFocus
-                PropertyChanges { // Change text color
-                    target: rebootText
-                    color: root.palette.highlight
-                }
-                PropertyChanges { // Darken the background
-                    target: rebootDarkener
-                    opacity: 0.5
-                    width: parent.width
-                }
-                PropertyChanges { // Add shadow to the background
-                    target: reboot.background
-                    layer.enabled: true
-                }
-                PropertyChanges { // Pop out the sidebars
-                    target: rebootUpwardsSidebar
-                    anchors.bottomMargin: 4 //TODO: Relative scaling
-                    opacity: 0.63
-                }
-                PropertyChanges { // Pop out the sidebars
-                    target: rebootDownwardsSidebar
-                    anchors.topMargin: 4 //TODO: Relative scaling
-                    opacity: 0.63
-                }
-                PropertyChanges { // Highlight square
-                    target: rebootSquare
-                    color: root.palette.highlight
-                }
-            }
-        ]
-
-        NumberAnimation {
-            id: rebootTypewriter
-            target: rebootButton
-            property: "typewriterCharIndex"
-            from: 0
-            to: rebootText.textToDisplay.length
-            duration: 200
-            easing.type: Easing.Linear
-        }
     }
 
     // Shutdown Button
@@ -759,160 +219,21 @@ ColumnLayout {
         property real opacityMultiplier: shutdown[2] ? 1 : 0.6
 
         height: 75
-        width: 500
-
-        // VERTICAL BAR
-        Image {
-            id: shutdownVerticalBar
-            anchors.right: parent.left
-            anchors.rightMargin: -21
-            width: 30
-            height: parent.height
-            source: Qt.resolvedUrl("../Assets/vertical_bar.png")
-            opacity: 0 //0.13
-        }
-
-        // FOCUS POINTER
-        Image {
-            id: shutdownFocusPointer
-            anchors.right: shutdown.left
-            anchors.rightMargin: 10 //TODO: Relative scaling
-            anchors.verticalCenter: shutdownButton.verticalCenter
-            width: 40 //TODO: Relative scaling
-            height: 27 //TODO: Relative scaling
-            source: Qt.resolvedUrl("../Assets/focus_pointer.png")
-            opacity: shutdown.activeFocus ? 0.63 : 0
-            visible: opacity > 0
-
-            Behavior on opacity {
-                NumberAnimation {
-                    duration: 200
-                }
-            }
-        }
-
-        // SIDEBARS
-        Rectangle {
-            id: shutdownUpwardsSidebar
-            width: 389 //TODO: Relative scaling
-            height: 2 //TODO: Relative scaling
-            anchors.bottom: shutdown.top
-            anchors.bottomMargin: -2
-            anchors.horizontalCenter: shutdown.horizontalCenter
-            color: "#000000"
-            opacity: 0
-
-            Behavior on anchors.bottomMargin {
-                NumberAnimation {
-                    duration: 100
-                    easing.type: Easing.InOutQuad
-                }
-            }
-        }
-        
-        Rectangle {
-            id: shutdownDownwardsSidebar
-            width: 389 //TODO: Relative scaling
-            height: 2 //TODO: Relative scaling
-            anchors.top: shutdown.bottom
-            anchors.topMargin: -2
-            anchors.horizontalCenter: shutdown.horizontalCenter
-            color: "#000000"
-            opacity: 0
-
-            Behavior on anchors.topMargin {
-                NumberAnimation {
-                    duration: 100
-                    easing.type: Easing.InOutQuad
-                }
-            }
-        }
-
-        // SQUARE
-        Rectangle {
-            id: shutdownSquare
-            anchors.left: shutdown.left
-            anchors.top: shutdown.top
-            anchors.bottom: shutdown.bottom
-            anchors.leftMargin: 12
-            anchors.topMargin: 12
-            anchors.bottomMargin: 12
-            width: height
-            color: root.palette.text
-            opacity: 0 //0.8
-            z: 5
-        }
-
-        Text {
-            id: shutdownText
-
-            property string textToDisplay: "Shutdown"
-
-            text: root.getTypewriterText(textToDisplay, shutdownButton.typewriterCharIndex)
-            anchors.left: shutdownSquare.right
-            anchors.verticalCenter: shutdown.verticalCenter
-            anchors.leftMargin: 12
-            font.family: root.fontFamily
-            font.pointSize: 15
-
-            color: root.palette.text
-            opacity: 0 //1
-            
-            z: 3
-        }
+        width: 453
 
         // BUTTON
         Button {
             id: shutdown
 
+            width: parent.width
+            height: parent.height
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
-            anchors.leftMargin: 55 //TODO: Relative scaling
-            height: 48
-            width: 389
 
-            background: Item {
-                Rectangle {
-                    id: shutdownBackground
-                    anchors.fill: parent
-                    color: root.palette.button
-
-                    opacity: 0
-                }
-
-                Rectangle {
-                    id: shutdownDarkener
-                    anchors.left: parent.left
-                    height: parent.height
-                    width: 0
-                    color: "#000000"
-                    opacity: 0
-
-                    Behavior on opacity {
-                        NumberAnimation {
-                            duration: 100
-                            easing.type: Easing.InOutQuad
-                        }
-                    }
-
-                    Behavior on width {
-                        enabled: !shutdownDarkener.width > 0 // Fire animation only when expanding, not collapsing
-                        NumberAnimation {
-                            duration: 500
-                            easing.type: Easing.OutExpo
-                        }
-                    }
-                }
-
-                layer.enabled: false
-                layer.effect: DropShadow {
-                    transparentBorder: true
-                    horizontalOffset: 4
-                    verticalOffset: 4
-                    radius: 0
-                    samples: 17
-                    color: "#45000000"
-                }
+            background: ButtonBackground {
+                id: shutdownBackground
+                focused: shutdown.activeFocus
+                textToDisplay: "Shutdown"
             }
 
             onClicked: {
@@ -921,7 +242,10 @@ ColumnLayout {
                 systemModal.cancelButton.forceActiveFocus()
 
                 modalBox.onConfirmCallback = function() {
-                    sddm.shutdown() //TODO: Prepone closing animation
+                    modalBox.visible = false
+                    closingAnimationDirector.start()
+                    systemDelayTimer.callback = sddm.shutdown()
+                    systemDelayTimer.running ? systemDelayTimer.stop() && systemDelayTimer.start() : systemDelayTimer.start()
                 }
                 modalBox.onCancelCallback = function() {
                     modalBox.visible = false
@@ -936,105 +260,28 @@ ColumnLayout {
                 reboot.forceActiveFocus()
             }
         }
+    }
 
-        states: [
-            State {
-                name: "focused"
-                when: shutdown.activeFocus
-                PropertyChanges { // Change text color
-                    target: shutdownText
-                    color: root.palette.highlight
-                }
-                PropertyChanges { // Darken the background
-                    target: shutdownDarkener
-                    opacity: 0.5
-                    width: parent.width
-                }
-                PropertyChanges { // Add shadow to the background
-                    target: shutdown.background
-                    layer.enabled: true
-                }
-                PropertyChanges { // Pop out the sidebars
-                    target: shutdownUpwardsSidebar
-                    anchors.bottomMargin: 4 //TODO: Relative scaling
-                    opacity: 0.63
-                }
-                PropertyChanges { // Pop out the sidebars
-                    target: shutdownDownwardsSidebar
-                    anchors.topMargin: 4 //TODO: Relative scaling
-                    opacity: 0.63
-                }
-                PropertyChanges { // Highlight square
-                    target: shutdownSquare
-                    color: root.palette.highlight
-                }
-            }
-        ]
-
-        NumberAnimation {
-            id: shutdownTypewriter
-            target: shutdownButton
-            property: "typewriterCharIndex"
-            from: 0
-            to: shutdownText.textToDisplay.length
-            duration: 200
-            easing.type: Easing.Linear
-        }
+    Timer {
+        id: systemDelayTimer
+        interval: 800
+        repeat: false
+        running: false
+        onTriggered: if (callback) callback()
     }
 
     ParallelAnimation {
         id: spawnAnimationSequence
 
-        // SUSPEND ANIMATIONS
+        // REBOOT ANIMATIONS
         SequentialAnimation {
-            id: suspendAnimations
-            
+            PauseAnimation { duration: 000 }
+
             ParallelAnimation {
-                NumberAnimation {
-                    target: suspendSquare
-                    property: "opacity"
-                    from: 0
-                    to: 0.8
-                    duration: 200
-                }
-
-                NumberAnimation {
-                    target: suspend
-                    property: "opacity"
-                    from: 0
-                    to: 1
-                    duration: 200
-                }
-
-                NumberAnimation {
-                    target: suspendBackground
-                    property: "opacity"
-                    from: 0
-                    to: 1
-                    duration: 200
-                }
-
-                NumberAnimation {
-                    target: suspend.anchors
-                    property: "leftMargin"
-                    from: -5 //TODO: Relative scaling
-                    to: 55 //TODO: Relative scaling
-                    duration: 200
-                }
-
-                NumberAnimation {
-                    target: suspendVerticalBar
-                    property: "opacity"
-                    from: 0
-                    to: 0.13
-                    duration: 200
-                }
-            }
-            
-            ScriptAction {
-                script: {
-                    suspendText.opacity = 1
-                    suspendTypewriter.start()
+                ScriptAction {
+                    script: {
+                        suspendBackground.spawn()
+                    }
                 }
             }
         }
@@ -1042,53 +289,12 @@ ColumnLayout {
         // HIBERNATE ANIMATIONS
         SequentialAnimation {
             PauseAnimation { duration: 100 }
-            
+
             ParallelAnimation {
-                NumberAnimation {
-                    target: hibernateSquare
-                    property: "opacity"
-                    from: 0
-                    to: 0.8
-                    duration: 200
-                }
-
-                NumberAnimation {
-                    target: hibernateBackground
-                    property: "opacity"
-                    from: 0
-                    to: 1
-                    duration: 200
-                }
-
-                NumberAnimation {
-                    target: hibernate
-                    property: "opacity"
-                    from: 0
-                    to: 1
-                    duration: 200
-                }
-
-                NumberAnimation {
-                    target: hibernate.anchors
-                    property: "leftMargin"
-                    from: -5 //TODO: Relative scaling
-                    to: 55 //TODO: Relative scaling
-                    duration: 200
-                }
-
-                NumberAnimation {
-                    target: hibernateVerticalBar
-                    property: "opacity"
-                    from: 0
-                    to: 0.13
-                    duration: 200
-                }
-            }
-
-            ScriptAction {
-                script: {
-                    hibernateText.opacity = 1
-                    hibernateTypewriter.start()
+                ScriptAction {
+                    script: {
+                        hibernateBackground.spawn()
+                    }
                 }
             }
         }
@@ -1096,52 +302,12 @@ ColumnLayout {
         // REBOOT ANIMATIONS
         SequentialAnimation {
             PauseAnimation { duration: 200 }
+
             ParallelAnimation {
-                NumberAnimation {
-                    target: rebootSquare
-                    property: "opacity"
-                    from: 0
-                    to: 0.8
-                    duration: 200
-                }
-
-                NumberAnimation {
-                    target: rebootBackground
-                    property: "opacity"
-                    from: 0
-                    to: 1
-                    duration: 200
-                }
-
-                NumberAnimation {
-                    target: reboot
-                    property: "opacity"
-                    from: 0
-                    to: 1
-                    duration: 200
-                }
-
-                NumberAnimation {
-                    target: reboot.anchors
-                    property: "leftMargin"
-                    from: -5 //TODO: Relative scaling
-                    to: 55 //TODO: Relative scaling
-                    duration: 200
-                }
-
-                NumberAnimation {
-                    target: rebootVerticalBar
-                    property: "opacity"
-                    from: 0
-                    to: 0.13
-                    duration: 200
-                }
-            }
-            
-            ScriptAction {
-                script: {
-                    rebootText.opacity = 1
-                    rebootTypewriter.start()
+                ScriptAction {
+                    script: {
+                        rebootBackground.spawn()
+                    }
                 }
             }
         }
@@ -1149,52 +315,12 @@ ColumnLayout {
         // SHUTDOWN ANIMATIONS
         SequentialAnimation {
             PauseAnimation { duration: 300 }
-            ParallelAnimation {
-                NumberAnimation {
-                    target: shutdownSquare
-                    property: "opacity"
-                    from: 0
-                    to: 0.8
-                    duration: 200
-                }
-
-                NumberAnimation {
-                    target: shutdownBackground
-                    property: "opacity"
-                    from: 0
-                    to: 1
-                    duration: 200
-                }
-
-                NumberAnimation {
-                    target: shutdown
-                    property: "opacity"
-                    from: 0
-                    to: 1
-                    duration: 200
-                }
-
-                NumberAnimation {
-                    target: shutdown.anchors
-                    property: "leftMargin"
-                    from: -5 //TODO: Relative scaling
-                    to: 55 //TODO: Relative scaling
-                    duration: 200
-                }
-
-                NumberAnimation {
-                    target: shutdownVerticalBar
-                    property: "opacity"
-                    from: 0
-                    to: 0.13
-                    duration: 200
-                }
-            }
             
-            ScriptAction {
-                script: {
-                    shutdownText.opacity = 1
-                    shutdownTypewriter.start()
+            ParallelAnimation {
+                ScriptAction {
+                    script: {
+                        shutdownBackground.spawn()
+                    }
                 }
             }
         }
@@ -1203,186 +329,44 @@ ColumnLayout {
     ParallelAnimation {
         id: despawnAnimationSequence
 
-        // SUSPEND ANIMATIONS
+        // SUSPEND BUTTON ANIMATIONS
         SequentialAnimation {
             PauseAnimation { duration: 300 }
-            ParallelAnimation {
-                NumberAnimation {
-                    target: suspendSquare
-                    property: "opacity"
-                    from: 0.8
-                    to: 0
-                    duration: 200
-                }
 
-                NumberAnimation {
-                    target: suspend
-                    property: "opacity"
-                    from: 1
-                    to: 0
-                    duration: 200
-                }
-
-                NumberAnimation {
-                    target: suspend.anchors
-                    property: "leftMargin"
-                    from: 55 //TODO: Relative scaling
-                    to: -5 //TODO: Relative scaling
-                    duration: 200
-                }
-
-                NumberAnimation {
-                    target: suspendVerticalBar
-                    property: "opacity"
-                    from: 0.13
-                    to: 0
-                    duration: 200
-                }
-
-                ScriptAction {
-                    script: {
-                        suspendText.opacity = 0
-                        suspendTypewriter.stop()
-                        suspendButton.typewriterCharIndex = 0
-                    }
+            ScriptAction {
+                script: {
+                    suspendBackground.despawn()
                 }
             }
         }
 
-        // HIBERNATE ANIMATIONS
+        // HIBERNATE BUTTON ANIMATIONS
         SequentialAnimation {
             PauseAnimation { duration: 200 }
-            
-            ParallelAnimation {
-                NumberAnimation {
-                    target: hibernateSquare
-                    property: "opacity"
-                    from: 0.8
-                    to: 0
-                    duration: 200
-                }
 
-                NumberAnimation {
-                    target: hibernate
-                    property: "opacity"
-                    from: 1
-                    to: 0
-                    duration: 200
-                }
-
-                NumberAnimation {
-                    target: hibernate.anchors
-                    property: "leftMargin"
-                    from: 55 //TODO: Relative scaling
-                    to: -5 //TODO: Relative scaling
-                    duration: 200
-                }
-
-                NumberAnimation {
-                    target: hibernateVerticalBar
-                    property: "opacity"
-                    from: 0.13
-                    to: 0
-                    duration: 200
-                }
-
-                ScriptAction {
-                    script: {
-                        hibernateText.opacity = 0
-                        hibernateTypewriter.stop()
-                        hibernateButton.typewriterCharIndex = 0
-                    }
+            ScriptAction {
+                script: {
+                    hibernateBackground.despawn()
                 }
             }
         }
 
-        // REBOOT SELECT ANIMATIONS
+        // REBOOT BUTTON ANIMATIONS
         SequentialAnimation {
             PauseAnimation { duration: 100 }
-            ParallelAnimation {
-                NumberAnimation {
-                    target: rebootSquare
-                    property: "opacity"
-                    from: 0.8
-                    to: 0
-                    duration: 200
-                }
 
-                NumberAnimation {
-                    target: reboot
-                    property: "opacity"
-                    from: 1
-                    to: 0
-                    duration: 200
-                }
-
-                NumberAnimation {
-                    target: reboot.anchors
-                    property: "leftMargin"
-                    from: 55 //TODO: Relative scaling
-                    to: -5 //TODO: Relative scaling
-                    duration: 200
-                }
-
-                NumberAnimation {
-                    target: rebootVerticalBar
-                    property: "opacity"
-                    from: 0.13
-                    to: 0
-                    duration: 200
-                }
-
-                ScriptAction {
-                    script: {
-                        rebootText.opacity = 0
-                        rebootTypewriter.stop()
-                        rebootButton.typewriterCharIndex = 0
-                    }
+            ScriptAction {
+                script: {
+                    rebootBackground.despawn()
                 }
             }
         }
 
         // SHUTDOWN BUTTON ANIMATIONS
         SequentialAnimation {
-            ParallelAnimation {
-                NumberAnimation {
-                    target: shutdownSquare
-                    property: "opacity"
-                    from: 0.8
-                    to: 0
-                    duration: 200
-                }
-
-                NumberAnimation {
-                    target: shutdown
-                    property: "opacity"
-                    from: 1
-                    to: 0
-                    duration: 200
-                }
-
-                NumberAnimation {
-                    target: shutdown.anchors
-                    property: "leftMargin"
-                    from: 55
-                    to: -5
-                    duration: 200
-                }
-
-                NumberAnimation {
-                    target: shutdownVerticalBar
-                    property: "opacity"
-                    from: 0.13
-                    to: 0
-                    duration: 200
-                }
-
-                ScriptAction {
-                    script: {
-                        shutdownText.opacity = 0
-                        shutdownTypewriter.stop()
-                        shutdownButton.typewriterCharIndex = 0
-                    }
+            ScriptAction {
+                script: {
+                    shutdownBackground.despawn()
                 }
             }
         }

@@ -168,7 +168,7 @@ Column {
             anchors.leftMargin: 55 //TODO: Relative scaling
             height: 48 //TODO: Relative scaling
             width: 389 //TODO: Relative scaling 
-            placeholderText: ""
+            placeholderText: root.getTypewriterText("Username", usernameField.typewriterCharIndex)
             selectByMouse: true
             horizontalAlignment: TextInput.AlignLeft
             renderType: Text.QtRendering
@@ -266,6 +266,16 @@ Column {
                     }
                 }
             ]
+        }
+        
+        NumberAnimation {
+            id: usernameTypewriter
+            target: usernameField
+            property: "typewriterCharIndex"
+            from: 0
+            to: 8
+            duration: 200
+            easing.type: Easing.Linear
         }
     }
 
@@ -1110,7 +1120,9 @@ Column {
             }
             
             ScriptAction {
-                script: usernameTypewriterTimer.start()
+                script: {
+                    usernameTypewriter.start()
+                }
             }
         }
 
@@ -1282,6 +1294,12 @@ Column {
                     to: 0
                     duration: 200
                 }
+                
+                ScriptAction {
+                    script: {
+                        usernameField.typewriterCharIndex = 0
+                    }
+                }
             }
         }
 
@@ -1365,6 +1383,12 @@ Column {
                     to: 0
                     duration: 200
                 }
+
+                ScriptAction {
+                    script: {
+                        sessionSelectContainer.sessionSelectCharIndex = 0
+                    }
+                }
             }
         }
 
@@ -1414,29 +1438,10 @@ Column {
 
     Timer {
         id: loginDelayTimer
-        interval: 600
+        interval: 800
         running: false
         repeat: false
         onTriggered: sddm.login(username.text, password.text, sessionSelect.selectedSession)
-    }
-
-    Timer {
-        id: usernameTypewriterTimer
-        interval: 20
-        running: false
-        repeat: true
-
-        onTriggered: {
-            usernameField.typewriterCharIndex++
-            // Update the placeholder text directly
-            var placeholder = config.TranslateUsernamePlaceholder || textConstants.userName;
-            username.placeholderText = inputContainer.formFunctions.getTypewriterText(placeholder, usernameField.typewriterCharIndex);
-            
-            // Stop once reached a reasonable max length
-            if (usernameField.typewriterCharIndex > 2000) {
-                usernameTypewriterTimer.stop()
-            }
-        }
     }
 
     Timer {

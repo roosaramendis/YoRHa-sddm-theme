@@ -29,9 +29,6 @@ import "."
 Pane {
     id: root
 
-    height: Screen.height
-    width: Screen.width
-
     padding: 0
 
     palette.button: "#33000000"
@@ -114,7 +111,7 @@ Pane {
         height: 1080
         width: 1920
 
-        anchors.left: parent.left
+        anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter // Does not update vertical center of window in real time
 
         // Mask
@@ -1467,7 +1464,10 @@ Pane {
             onClicked: parent.forceActiveFocus()
         }
 
+
         transform: Scale {
+            origin.x: sizeHelper.width / 2
+            origin.y: sizeHelper.height / 2
             xScale: {
                 let scaleByWidth  = root.width  / sizeHelper.width
                 let scaleByHeight = root.height / sizeHelper.height

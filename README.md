@@ -7,7 +7,8 @@ https://github.com/user-attachments/assets/e19d932b-0477-4889-8172-57c3c5406f8e
 
 
 ## Features
-- The user will be shown with a **Capital Letter** regardless of the typed case, this is only a graphical effect
+- ~~The user will be shown with a **Capital Letter** regardless of the typed case, this is only a graphical effect~~
+    - You can choose the capitalization through the [theme.conf](./theme.conf) file
 - Last logged in user will be used as text placeholder
 - Random quotes will be fetched from the [Quotes](./Components/Quotes.qml) module
     - The [Quotes](./Quotes/) Folder is now simply for reference and to store quotes you may want

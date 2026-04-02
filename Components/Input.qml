@@ -57,7 +57,7 @@ Column {
         TextField {
             id: username
             text: config.ForceLastUser === "true" ? userModel.lastUser : ""
-            //font.capitalization: Font.Capitalize
+            font.capitalization: config.ForceUsernameCapitalization === "true" ? Font.Capitalize : Font.MixedCase
             
             font.family: inputContainer.fontFamily
             font.pointSize: 15

@@ -167,16 +167,17 @@ Item {
 
             property var typewriterCharIndex: 0
 
-            property var headerText: [ "Suspend", "Hibernate", "Reboot", "Shutdown", "---" ]
+            property var headerText: [ "Suspend", "Hibernate", "Reboot", "Hybrid Sleep", "Shutdown", "---" ]
             property int state: controlButtons.focusedButtonIndex
             property var captionText: [
                 [ "Low Power Standby Protocol", "Core systems powered down.\nexternal interfaces secured.\nMinimal energy required.\nReady for brief reactivation." ],
                 [ "Deep System Hibernation Protocol", "All communication channels closed.\nMemory preserved.\nCore processing halted.\nReactivation requires full system boot sequence." ],
                 [ "System Reset Protocol", "All active processes terminated.\nMemory cleared.\nCore processing reinitialized." ],
+                [ "Hybrid Sleep Protocol", "Systems in low power state.\nMemory preserved.\nQuick reactivation possible." ],
                 [ "Emergency Power Down Protocol", "All systems forcibly powered off.\nMemory flushed.\nNo active processes." ],
                 [ "No Protocol", "No Protocol Selected.\nSelect a protocol to display details." ]
             ]
-            property var icon: [ "suspend.svg", "hibernate.svg", "reboot.svg", "shutdown.svg", "empty.svg" ]
+            property var icon: [ "suspend.svg", "hibernate.svg", "reboot.svg", "hybrid_sleep.svg", "shutdown.svg", "empty.svg" ]
 
             function spawn() {
                 descriptionContainerFadeIn.start()

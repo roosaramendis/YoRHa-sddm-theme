@@ -1,6 +1,8 @@
+## Warning
+Broken system controls
+
 ## Previews
-![Default Preview](./Previews/default.png)
-![DE Select Preview](./Previews/de-select.png)
+[preview](./Previews/preview.mp4)
 
 ## Features
 - The user will be shown with a **Capital Letter** regardless of the typed case, this is only a graphical effect

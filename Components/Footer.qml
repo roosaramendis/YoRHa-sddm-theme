@@ -134,11 +134,11 @@ Rectangle {
             anchors.verticalCenter: parent.verticalCenter
             font.pointSize: 18
             font.family: root.fontFamily
-            font.capitalization: Qt.Capitalize
+            font.capitalization: Font.Capitalize
             color: "#34332B"
             opacity: footer.typewriterCharIndex > currentDate.date.length + currentTime.time.length + 2 ? 0.8 : 0
 
-            property string system: (sddm.hostName || "YoRHa") + " System"
+            property string system: (sddm.hostName || "YoRHa") + " system"
 
             text: root.getTypewriterText(systemInfo.system, footer.typewriterCharIndex - currentDate.date.length - currentTime.time.length - 2)
         }

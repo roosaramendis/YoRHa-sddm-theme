@@ -27,7 +27,8 @@ ColumnLayout {
     property bool canSuspend: sddm.canSuspend
     property bool canHibernate: sddm.canHibernate
     property bool canReboot: sddm.canReboot
-    property bool canShutdown: sddm.canShutdown
+    property bool canHybridSleep: sddm.canHybridSleep
+    property bool canShutdown: sddm.canPowerOff
 
     spacing: 0
 
@@ -35,7 +36,7 @@ ColumnLayout {
     required property Item modalBox
     required property Item systemModal
 
-    property int focusedButtonIndex: suspend.activeFocus ? 0 : hibernate.activeFocus ? 1 : reboot.activeFocus ? 2 : shutdown.activeFocus ? 3 : 4
+    property int focusedButtonIndex: suspend.activeFocus ? 0 : hibernate.activeFocus ? 1 : reboot.activeFocus ? 2 : hybridSleep.activeFocus ? 3 : shutdown.activeFocus ? 4 : 5
 
     function spawn() {
         spawnAnimationSequence.start()
@@ -68,9 +69,11 @@ ColumnLayout {
                 id: suspendBackground
                 focused: suspend.activeFocus
                 textToDisplay: "Suspend"
+                enabled: canSuspend
             }
 
             onClicked: {
+                if (!canSuspend) return //TODO: Play error sfx
                 systemModal.text = "Suspend the system?"
                 modalBox.visible = true
                 systemModal.cancelButton.forceActiveFocus()
@@ -126,9 +129,11 @@ ColumnLayout {
                 id: hibernateBackground
                 focused: hibernate.activeFocus
                 textToDisplay: "Hibernate"
+                enabled: canHibernate
             }
 
             onClicked: {
+                if (!canHibernate) return //TODO: Play error sfx
                 systemModal.text = "Hibernate the system?"
                 modalBox.visible = true
                 systemModal.cancelButton.forceActiveFocus()
@@ -180,9 +185,11 @@ ColumnLayout {
                 id: rebootBackground
                 focused: reboot.activeFocus
                 textToDisplay: "Reboot"
+                enabled: canReboot
             }
 
             onClicked: {
+                if (!canReboot) return //TODO: Play error sfx
                 systemModal.text = "Reboot the system?"
                 modalBox.visible = true
                 systemModal.cancelButton.forceActiveFocus()
@@ -204,6 +211,61 @@ ColumnLayout {
             Keys.onUpPressed: {
                 focusSound.play()
                 hibernate.forceActiveFocus()
+            }
+            Keys.onDownPressed: {
+                focusSound.play()
+                hybridSleep.forceActiveFocus()
+            }
+        }
+    }
+
+    // Hybrid Sleep Button
+    Item {
+        id: hybridSleepButton
+
+        property real opacityMultiplier: hybridSleep[2] ? 1 : 0.6
+
+        height: 75
+        width: 453
+
+        Button {
+            id: hybridSleep
+
+            width: parent.width
+            height: parent.height
+            anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
+
+            background: ButtonBackground {
+                id: hybridSleepBackground
+                focused: hybridSleep.activeFocus
+                textToDisplay: "Hybrid Sleep"
+                enabled: canHybridSleep
+            }
+
+            onClicked: {
+                if (!canHybridSleep) return //TODO: Play error sfx
+                systemModal.text = "Initiate Hybrid Sleep?"
+                modalBox.visible = true
+                systemModal.cancelButton.forceActiveFocus()
+
+                modalBox.onConfirmCallback = function() {
+                    modalBox.visible = false
+                    closingAnimationDirector.start()
+                    systemDelayTimer.callback = sddm.hybridSleep()
+                    systemDelayTimer.running ? systemDelayTimer.stop() && systemDelayTimer.start() : systemDelayTimer.start()
+                }
+                modalBox.onCancelCallback = function() {
+                    modalBox.visible = false
+                    hybridSleep.forceActiveFocus()
+                }
+            }
+
+            Keys.onReturnPressed: clicked()
+
+            Keys.onUpPressed: {
+                focusSound.play()
+                reboot.forceActiveFocus()
             }
             Keys.onDownPressed: {
                 focusSound.play()
@@ -235,9 +297,11 @@ ColumnLayout {
                 id: shutdownBackground
                 focused: shutdown.activeFocus
                 textToDisplay: "Shutdown"
+                enabled: canShutdown
             }
 
             onClicked: {
+                if (!canShutdown) return //TODO: Play error sfx
                 systemModal.text = "Shutdown the system?"
                 modalBox.visible = true
                 systemModal.cancelButton.forceActiveFocus()
@@ -258,7 +322,7 @@ ColumnLayout {
 
             Keys.onUpPressed: {
                 focusSound.play()
-                reboot.forceActiveFocus()
+                hybridSleep.forceActiveFocus()
             }
         }
     }
@@ -313,9 +377,22 @@ ColumnLayout {
             }
         }
 
-        // SHUTDOWN ANIMATIONS
+        // HYBRID SLEEP ANIMATIONS
         SequentialAnimation {
             PauseAnimation { duration: 300 }
+
+            ParallelAnimation {
+                ScriptAction {
+                    script: {
+                        hybridSleepBackground.spawn()
+                    }
+                }
+            }
+        }
+
+        // SHUTDOWN ANIMATIONS
+        SequentialAnimation {
+            PauseAnimation { duration: 400 }
             
             ParallelAnimation {
                 ScriptAction {
@@ -332,7 +409,7 @@ ColumnLayout {
 
         // SUSPEND BUTTON ANIMATIONS
         SequentialAnimation {
-            PauseAnimation { duration: 300 }
+            PauseAnimation { duration: 400 }
 
             ScriptAction {
                 script: {
@@ -343,7 +420,7 @@ ColumnLayout {
 
         // HIBERNATE BUTTON ANIMATIONS
         SequentialAnimation {
-            PauseAnimation { duration: 200 }
+            PauseAnimation { duration: 300 }
 
             ScriptAction {
                 script: {
@@ -354,11 +431,22 @@ ColumnLayout {
 
         // REBOOT BUTTON ANIMATIONS
         SequentialAnimation {
-            PauseAnimation { duration: 100 }
+            PauseAnimation { duration: 200 }
 
             ScriptAction {
                 script: {
                     rebootBackground.despawn()
+                }
+            }
+        }
+
+        // HYBRID SLEEP BUTTON ANIMATIONS
+        SequentialAnimation {
+            PauseAnimation { duration: 100 }
+
+            ScriptAction {
+                script: {
+                    hybridSleepBackground.despawn()
                 }
             }
         }

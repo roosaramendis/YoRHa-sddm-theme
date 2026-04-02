@@ -545,7 +545,6 @@ Pane {
                 function removeActive() {
                     loginPanelButtonWrapper.active = false
                     controlPanelButtonWrapper.active = false
-                    informationPanelButtonWrapper.active = false
                 }
 
                 function spawn() {
@@ -768,7 +767,7 @@ Pane {
 
                 loginPanelButton: loginPanelButtonWrapper
 
-                visible: loginPanelButtonWrapper.active
+                visible: false
             }
 
             ControlPanel {
@@ -784,7 +783,7 @@ Pane {
                 modalBox: modalBox
                 systemModal: systemModal
 
-                visible: controlPanelButtonWrapper.active
+                visible: false
             }
 
             Footer {
@@ -871,6 +870,8 @@ Pane {
                 target: loginPanelButtonWrapper
                 function onActiveChanged() {
                     if (loginPanelButtonWrapper.active) {
+                        controlPanel.visible = false // TODO: Better method to remove active to every button but the one focused
+                        loginPanel.visible = true
                         loginPanel.spawn()
                     } else {
                         loginPanel.despawn()
@@ -882,6 +883,8 @@ Pane {
                 target: controlPanelButtonWrapper
                 function onActiveChanged() {
                     if (controlPanelButtonWrapper.active) {
+                        loginPanel.visible = false // TODO: Better method to remove active to every button but the one focused
+                        controlPanel.visible = true
                         controlPanel.spawn()
                     } else {
                         controlPanel.despawn()

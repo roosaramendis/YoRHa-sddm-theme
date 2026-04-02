@@ -32,6 +32,7 @@
 ## Tabs
 - [x] Main login
 - [x] System Control (shutdown/hibernate/suspend/reboot)
+    - [x] HybridSleep
 - [ ] System Info
 - [ ] System Log/Quests
 - [ ] idk

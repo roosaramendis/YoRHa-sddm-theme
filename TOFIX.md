@@ -2,7 +2,7 @@
 - [x] On login fail, call openingAnimationDirector
 - [ ] Reimplement tab navigation
 - [x] Automatic active on login panel
-- [ ] Change README preview
+- [x] Change README preview
 - [x] Relink closing animation
 - [x] Fix Login Panel typewriter effect
 - [ ] Control Panel is slightly higher than Login Panel

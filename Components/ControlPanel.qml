@@ -17,10 +17,10 @@
 // along with Sugar Dark. If not, see <https://www.gnu.org/licenses/>.
 //
 
-import QtQuick 2.11
-import QtQuick.Layouts 1.11
-import QtQuick.Controls 2.4
-import QtGraphicalEffects 1.12
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Controls
+import Qt5Compat.GraphicalEffects
 
 Item {
     id: controlPanelRoot

@@ -18,11 +18,11 @@
 // along with Sugar Dark. If not, see <https://www.gnu.org/licenses/>.
 //
 
-import QtQuick
-import QtQuick.Layouts
+import QtQuick 2.11
+import QtQuick.Layouts 1.11
 import SddmComponents 2.0 as SDDM
-import QtQuick.Controls
-import Qt5Compat.GraphicalEffects
+import QtQuick.Controls 2.4
+import QtGraphicalEffects 1.0
 
 Item {
     id: formContainer

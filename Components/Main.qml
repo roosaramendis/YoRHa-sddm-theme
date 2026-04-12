@@ -18,12 +18,12 @@
 // along with Sugar Dark. If not, see <https://www.gnu.org/licenses/>.
 //
 
-import QtQuick
-import QtQuick.Layouts
-import QtQuick.Controls
-import Qt5Compat.GraphicalEffects
-import QtMultimedia
-import QtQuick.Window
+import QtQuick 2.11
+import QtQuick.Layouts 1.11
+import QtQuick.Controls 2.4
+import QtGraphicalEffects 1.0
+import QtMultimedia 5.11
+import QtQuick.Window 2.11
 import "."
 
 Pane {
@@ -72,6 +72,9 @@ Pane {
 
     property string fontFamily: rodinFont.name
 
+    // True when this instance is running on a portrait screen
+    readonly property bool isPortrait: width < height
+
     focus: true
 
     Rectangle {
@@ -108,8 +111,9 @@ Pane {
     Item {
         id: sizeHelper
 
-        height: 1080
-        width: 1920
+        // Swap dimensions on portrait so background fills correctly
+        height: root.isPortrait ? 1920 : 1080
+        width:  root.isPortrait ? 1080 : 1920
 
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter // Does not update vertical center of window in real time
@@ -804,6 +808,7 @@ Pane {
                     infoBoardFadeIn.start()
                     infoBoardSlideIn.start()
                     infoBoard.typewriterForward.start()
+                    centerClockFadeIn.start()
                 }
 
                 function despawn() {
@@ -811,9 +816,120 @@ Pane {
                     infoBoard.typewriterBackward.start()
                     infoBoardFadeOut.start()
                     infoBoardSlideOut.start()
+                    centerClockFadeOut.start()
                 }
 
                 z: 2
+            }
+
+            // CENTER CLOCK — time + date + title, shown on idle screen
+            Item {
+                id: centerClock
+                anchors.centerIn: parent
+                anchors.verticalCenterOffset: -60
+                opacity: 0
+                z: 1
+
+                property int typewriterCharIndex: 0
+
+                property string timeText: Qt.formatTime(new Date(), config.HourFormat == "12" ? "hh:mm AP" : "HH:mm")
+                property string dateText: Qt.formatDate(new Date(), "yyyy.MM.dd")
+
+                Column {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 6
+
+                    // Big time
+                    Text {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        text: root.getTypewriterText(centerClock.timeText, centerClock.typewriterCharIndex)
+                        font.family: root.fontFamily
+                        font.pointSize: sizeHelper.height / 18
+                        color: "#34332B"
+                        opacity: 0.9
+                    }
+
+                    // Date below time, smaller + spaced
+                    Text {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        text: root.getTypewriterText(centerClock.dateText, centerClock.typewriterCharIndex - centerClock.timeText.length)
+                        font.family: root.fontFamily
+                        font.pointSize: sizeHelper.height / 55
+                        color: "#34332B"
+                        opacity: centerClock.typewriterCharIndex > centerClock.timeText.length ? 0.65 : 0
+                        font.letterSpacing: 4
+                    }
+
+                    // Spacer
+                    Item { width: 1; height: 14 }
+
+                    // [ NieR:Automata ] title
+                    Text {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        text: root.getTypewriterText("[ NieR:Automata ]", centerClock.typewriterCharIndex - centerClock.timeText.length - centerClock.dateText.length)
+                        font.family: root.fontFamily
+                        font.pointSize: sizeHelper.height / 30
+                        color: "#34332B"
+                        opacity: centerClock.typewriterCharIndex > centerClock.timeText.length + centerClock.dateText.length ? 0.85 : 0
+                        font.letterSpacing: 2
+                    }
+
+                    // YoRHa Operating System subtitle
+                    Text {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        text: root.getTypewriterText("YoRHa Operating System", centerClock.typewriterCharIndex - centerClock.timeText.length - centerClock.dateText.length - 17)
+                        font.family: root.fontFamily
+                        font.pointSize: sizeHelper.height / 70
+                        color: "#34332B"
+                        opacity: centerClock.typewriterCharIndex > centerClock.timeText.length + centerClock.dateText.length + 17 ? 0.55 : 0
+                        font.letterSpacing: 3
+                    }
+                }
+
+                // Live clock updater
+                Timer {
+                    interval: 1000
+                    repeat: true
+                    running: centerClock.opacity > 0
+                    onTriggered: {
+                        centerClock.timeText = Qt.formatTime(new Date(), config.HourFormat == "12" ? "hh:mm AP" : "HH:mm")
+                        centerClock.dateText = Qt.formatDate(new Date(), "yyyy.MM.dd")
+                    }
+                }
+            }
+
+            NumberAnimation {
+                id: centerClockFadeIn
+                target: centerClock
+                property: "opacity"
+                from: 0
+                to: 1
+                duration: 600
+                easing.type: Easing.OutCubic
+
+                onStarted: {
+                    centerClockTypewriter.start()
+                }
+            }
+
+            NumberAnimation {
+                id: centerClockFadeOut
+                target: centerClock
+                property: "opacity"
+                from: 1
+                to: 0
+                duration: 400
+                easing.type: Easing.OutCubic
+            }
+
+            NumberAnimation {
+                id: centerClockTypewriter
+                target: centerClock
+                property: "typewriterCharIndex"
+                from: 0
+                to: centerClock.timeText.length + centerClock.dateText.length + 17 + 22
+                duration: 600
+                easing.type: Easing.Linear
             }
 
             NumberAnimation {
@@ -892,7 +1008,107 @@ Pane {
                 }
             }
 
+            // Hide all interactive UI on portrait screens — only clock is shown
+            visible: !root.isPortrait
+
             z: 3
+        }
+
+        // PORTRAIT CLOCK — only shown on portrait screens, always visible
+        Item {
+            id: portraitClock
+            anchors.centerIn: parent
+            visible: root.isPortrait
+            opacity: root.isPortrait ? 1 : 0
+            z: 4
+
+            property int typewriterCharIndex: 0
+            property string timeText: Qt.formatTime(new Date(), config.HourFormat == "12" ? "hh:mm AP" : "HH:mm")
+            property string dateText: Qt.formatDate(new Date(), "yyyy.MM.dd")
+
+            Column {
+                anchors.horizontalCenter: parent.horizontalCenter
+                spacing: 8
+
+                // YoRHa logo — on top, bigger
+                Image {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: 360
+                    height: 360
+                    source: Qt.resolvedUrl("../Assets/yorha_logo.png")
+                    fillMode: Image.PreserveAspectFit
+                    opacity: portraitClock.typewriterCharIndex > 0 ? 0.65 : 0
+                    antialiasing: true
+
+                    Behavior on opacity {
+                        NumberAnimation { duration: 600 }
+                    }
+                }
+
+                Item { width: 1; height: 20 }
+
+                Text {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: root.getTypewriterText(portraitClock.timeText, portraitClock.typewriterCharIndex)
+                    font.family: root.fontFamily
+                    font.pointSize: sizeHelper.height / 18
+                    color: "#34332B"
+                    opacity: 0.9
+                }
+
+                Text {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: root.getTypewriterText(portraitClock.dateText, portraitClock.typewriterCharIndex - portraitClock.timeText.length)
+                    font.family: root.fontFamily
+                    font.pointSize: sizeHelper.height / 55
+                    color: "#34332B"
+                    opacity: portraitClock.typewriterCharIndex > portraitClock.timeText.length ? 0.65 : 0
+                    font.letterSpacing: 4
+                }
+
+                Item { width: 1; height: 20 }
+
+                Text {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: root.getTypewriterText("[ NieR:Automata ]", portraitClock.typewriterCharIndex - portraitClock.timeText.length - portraitClock.dateText.length)
+                    font.family: root.fontFamily
+                    font.pointSize: sizeHelper.height / 30
+                    color: "#34332B"
+                    opacity: portraitClock.typewriterCharIndex > portraitClock.timeText.length + portraitClock.dateText.length ? 0.85 : 0
+                    font.letterSpacing: 2
+                }
+
+                Text {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: root.getTypewriterText("YoRHa Operating System", portraitClock.typewriterCharIndex - portraitClock.timeText.length - portraitClock.dateText.length - 17)
+                    font.family: root.fontFamily
+                    font.pointSize: sizeHelper.height / 70
+                    color: "#34332B"
+                    opacity: portraitClock.typewriterCharIndex > portraitClock.timeText.length + portraitClock.dateText.length + 17 ? 0.55 : 0
+                    font.letterSpacing: 3
+                }
+            }
+
+            Timer {
+                interval: 1000
+                repeat: true
+                running: root.isPortrait
+                onTriggered: {
+                    portraitClock.timeText = Qt.formatTime(new Date(), config.HourFormat == "12" ? "hh:mm AP" : "HH:mm")
+                    portraitClock.dateText = Qt.formatDate(new Date(), "yyyy.MM.dd")
+                }
+            }
+
+            NumberAnimation {
+                id: portraitClockTypewriter
+                target: portraitClock
+                property: "typewriterCharIndex"
+                from: 0
+                to: portraitClock.timeText.length + portraitClock.dateText.length + 17 + 22 + 15
+                duration: 800
+                easing.type: Easing.Linear
+                running: root.isPortrait
+            }
         }
 
         // BACKGROUND

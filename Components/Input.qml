@@ -18,11 +18,11 @@
 // along with Sugar Dark. If not, see <https://www.gnu.org/licenses/>.
 //
 
-import QtQuick
-import QtQuick.Layouts
-import QtQuick.Controls
-import Qt5Compat.GraphicalEffects
-import QtMultimedia
+import QtQuick 2.11
+import QtQuick.Layouts 1.11
+import QtQuick.Controls 2.4
+import QtGraphicalEffects 1.0
+import QtMultimedia 5.11
 import SddmComponents 2.0 as SDDM
 
 Column {
@@ -44,40 +44,61 @@ Column {
         despawnAnimationSequence.start()
     }
 
-    // USERNAME INPUT
+    // USERNAME INPUT (with user list dropdown)
     Item {
         id: usernameField
 
         property int typewriterCharIndex: 0
 
+        // Expose the current username text for login
+        property alias text: username.text
+
         height: 75
         width: 453 //TODO: Relative scaling
         anchors.left: parent.left
 
+        // Hidden TextField keeps the actual username value and handles key events
         TextField {
             id: username
-            text: config.ForceLastUser === "true" ? userModel.lastUser : ""
-            font.capitalization: config.ForceUsernameCapitalization === "true" ? Font.Capitalize : Font.MixedCase
-            
-            font.family: inputContainer.fontFamily
-            font.pointSize: 15
+            visible: false
+            text: {
+                if (config.ForceLastUser === "true" && userModel.lastUser !== "")
+                    return userModel.lastUser
+                if (userCombo.currentIndex >= 0)
+                    return userModel.data(userModel.index(userCombo.currentIndex, 0), 0x101) || ""
+                return ""
+            }
+        }
+
+        // ComboBox showing all users
+        ComboBox {
+            id: userCombo
 
             width: parent.width
             height: parent.height
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
 
-            placeholderText: root.getTypewriterText("Username", usernameField.typewriterCharIndex)
-            selectByMouse: true
-            horizontalAlignment: TextInput.AlignLeft
-            renderType: Text.QtRendering
-            color: username.activeFocus ? root.palette.highlight : root.palette.text
-            leftPadding: 112
             opacity: 0
+            focus: false
 
-            background: ButtonBackground {
-                id: usernameBackground
-                focused: username.activeFocus
+            model: userModel
+            textRole: "name"
+
+            // Select last user by default
+            currentIndex: {
+                if (userModel.lastUser !== "") {
+                    for (var i = 0; i < userModel.count; i++) {
+                        if (userModel.data(userModel.index(i, 0), 0x101) === userModel.lastUser)
+                            return i
+                    }
+                }
+                return 0
+            }
+
+            // Keep username TextField in sync
+            onCurrentIndexChanged: {
+                username.text = userModel.data(userModel.index(currentIndex, 0), 0x101) || ""
             }
 
             Keys.onReturnPressed: loginButton.clicked()
@@ -85,18 +106,79 @@ Column {
             KeyNavigation.up: loginPanelButton.button
 
             Keys.onDownPressed: {
-                focusSound.play()
-                password.forceActiveFocus()
+                if (popup.visible) {
+                    // Navigate list
+                } else {
+                    focusSound.play()
+                    password.forceActiveFocus()
+                }
             }
 
             Keys.onUpPressed: {
-                focusSound.play()
-                loginPanelButton.button.forceActiveFocus()
+                if (!popup.visible) {
+                    focusSound.play()
+                    loginPanelButton.button.forceActiveFocus()
+                }
+            }
+
+            // Style: transparent background, we use ButtonBackground underneath
+            background: ButtonBackground {
+                id: usernameBackground
+                focused: userCombo.activeFocus
+                textToDisplay: userCombo.currentText
+            }
+
+            // Hide the default ComboBox content area — ButtonBackground draws the text
+            contentItem: Item {}
+
+            // Dropdown popup styled to match the theme
+            popup: Popup {
+                y: userCombo.height
+                width: userCombo.width
+                padding: 0
+
+                background: Rectangle {
+                    color: "#D5CFAF"
+                    border.color: "#AFA98F"
+                    border.width: 2
+                }
+
+                contentItem: ListView {
+                    implicitHeight: contentHeight
+                    model: userCombo.delegateModel
+                    clip: true
+
+                    ScrollIndicator.vertical: ScrollIndicator {}
+                }
+            }
+
+            delegate: ItemDelegate {
+                width: userCombo.width
+                height: 50
+
+                background: Rectangle {
+                    color: hovered ? "#C9C3A3" : "#D5CFAF"
+                }
+
+                contentItem: Text {
+                    text: model.name
+                    font.family: inputContainer.fontFamily
+                    font.pointSize: 15
+                    color: "#34332B"
+                    leftPadding: 112
+                    verticalAlignment: Text.AlignVCenter
+                }
+
+                onClicked: {
+                    userCombo.currentIndex = index
+                    userCombo.popup.close()
+                    password.forceActiveFocus()
+                }
             }
 
             z: 1
         }
-        
+
         NumberAnimation {
             id: usernameTypewriter
             target: usernameField
@@ -110,6 +192,7 @@ Column {
         Connections {
             target: usernameBackground
             function onSpawned() {
+                userCombo.opacity = 1
                 usernameTypewriter.start()
             }
         }
@@ -359,6 +442,7 @@ Column {
             ScriptAction {
                 script: {
                     usernameBackground.spawn()
+                    userCombo.opacity = 1
                 }
             }
         }

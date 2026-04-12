@@ -17,11 +17,11 @@
 // along with Sugar Dark. If not, see <https://www.gnu.org/licenses/>.
 //
 
-import QtQuick
-import QtQuick.Layouts
-import Qt5Compat.GraphicalEffects
-import QtQuick.Controls
-import QtMultimedia
+import QtQuick 2.11
+import QtQuick.Layouts 1.11
+import QtGraphicalEffects 1.0
+import QtQuick.Controls 2.4
+import QtMultimedia 5.11
 
 Item {
     id: modalRoot

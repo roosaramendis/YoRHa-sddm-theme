@@ -1,0 +1,12 @@
+module YoRHa-sddm-theme
+ButtonBackground 1.0 Components/ButtonBackground.qml
+ControlButtons 1.0 Components/ControlButtons.qml
+ControlPanel 1.0 Components/ControlPanel.qml
+Footer 1.0 Components/Footer.qml
+Input 1.0 Components/Input.qml
+LoginPanel 1.0 Components/LoginPanel.qml
+Main 1.0 Components/Main.qml
+Modal 1.0 Components/Modal.qml
+PanelButton 1.0 Components/PanelButton.qml
+Quotes 1.0 Components/Quotes.qml
+SessionButton 1.0 Components/SessionButton.qml
